@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Rhino.Mocks;
+﻿using NSubstitute;
+using NUnit.Framework;
 using Sniper;
 using System;
 using System.Collections.Generic;
@@ -19,8 +19,8 @@ namespace SniperTest
         [SetUp]
         public void Setup()
         {
-            sniperListener = MockRepository.GenerateMock<ISniperListener>();
-            auction = MockRepository.GenerateMock<IAuction>();
+            sniperListener = Substitute.For<ISniperListener>();
+            auction = Substitute.For<IAuction>();
 
             sniper = new AuctionSniper(auction, sniperListener);
         }
@@ -28,31 +28,25 @@ namespace SniperTest
         [Test]
         public void ReportstLostWhenAuctionClosesImmediately()
         {
-            sniperListener.Expect(sl => sl.SniperLost());
-
             sniper.AuctionClosed();
 
-            sniperListener.VerifyAllExpectations();
+            sniperListener.Received().SniperLost();
         }
 
         [Test]
         public void ReportstLostWhenAuctionClosesWhenBidding()
         {
-            sniperListener.Expect(sl => sl.SniperLost());
-
             sniper.CurrentPrice(123, 45, PriceSource.FromOtherBidder);
 
-            sniperListener.VerifyAllExpectations();
+            sniperListener.Received().SniperLost();
         }
 
         [Test]
         public void ReportsIsWinningWhenCurrentPriceComesFromSniper()
         {
-            sniperListener.Expect(sl => sl.SniperWinning());
-
             sniper.CurrentPrice(123, 45, PriceSource.FromSniper);
 
-            sniperListener.VerifyAllExpectations();
+            sniperListener.Received().SniperWinning();
         }
 
         [Test]
@@ -61,13 +55,10 @@ namespace SniperTest
             int price = 1001;
             int increment = 25;
 
-            auction.Expect(a => a.Bid(price + increment));
-            sniperListener.Expect(sl => sl.SniperBidding());
-
             sniper.CurrentPrice(price, increment, PriceSource.FromOtherBidder);
 
-            auction.VerifyAllExpectations();
-            sniperListener.VerifyAllExpectations();
+            auction.Received().Bid(price + increment);
+            sniperListener.Received().SniperBidding();
 
         }
     }

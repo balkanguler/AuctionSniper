@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sniper;
-using Rhino.Mocks;
 using NSubstitute;
 
 namespace SniperTest
@@ -29,37 +28,29 @@ namespace SniperTest
         [Test]
         public void NotifiesAuctionClosedWhenCloseMessageReceived()
         {
-            listenerMock.Expect(l => l.AuctionClosed());
-
             string message = "SOLVersion: 1.1; Event: CLOSE;";
 
             translator.ProcessMessage(UNUSED_CHAT, message);
 
-            listenerMock.VerifyAllExpectations();
+            listenerMock.Received().AuctionClosed();
         }
 
         [Test]
         public void NotifiesBidDetailsWhenCurrentPriceMessageReceivedFromOtherBidder()
         {
-            listenerMock.Expect(l => l.CurrentPrice(192, 7, PriceSource.FromOtherBidder)).Repeat.Once();
-
             string message = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7; Bidder: Someone else;";
 
             translator.ProcessMessage(UNUSED_CHAT, message);
-
-            listenerMock.VerifyAllExpectations();
+            listenerMock.Received(1).CurrentPrice(192, 7, PriceSource.FromOtherBidder);
         }
 
         [Test]
         public void NotifiesBidDetailsWhenCurrentPriceMessageReceivedFromSniper()
         {
-            listenerMock.Expect(l => l.CurrentPrice(234, 5, PriceSource.FromSniper)).Repeat.Once();
-
             string message = string.Format("SOLVersion: 1.1; Event: PRICE; CurrentPrice: 234; Increment: 5; Bidder: {0};", SNIPER_ID);
 
             translator.ProcessMessage(UNUSED_CHAT, message);
-
-            listenerMock.VerifyAllExpectations();
+            listenerMock.Received(1).CurrentPrice(234, 5, PriceSource.FromSniper);
         }
     }
 }
