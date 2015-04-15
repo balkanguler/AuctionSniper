@@ -26,6 +26,10 @@ namespace Sniper
         ChatManager chatManager;
         Chat chat;
 
+        SniperTableModel snipers = new SniperTableModel();
+
+        
+
         public static readonly string ITEM_ID_AS_LOGIN = "auction-{0}";
         public static readonly string AUCTION_RESOURCE = "Auction";
         public static readonly string AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "{0}/" + AUCTION_RESOURCE;
@@ -35,7 +39,7 @@ namespace Sniper
         public Form1()
         {
             InitializeComponent();
-            lblStatus.Text = Status.STATUS_JOINING;
+            gvSniper.DataSource = snipers;
         }
 
         public void Start(string XMPP_HOSTNAME, string XMPP_PORT, string SNIPER_ID, string SNIPER_PASSWORD, string itemId)
@@ -61,7 +65,7 @@ namespace Sniper
             auction = new XMPPAuction();
             chatManager = new ChatManager(connection);
             chat = chatManager.CreateChat(string.Format(ITEM_ID_AS_LOGIN, itemId), XMPP_HOSTNAME, AUCTION_RESOURCE,
-                new AuctionMessageTranslator(SNIPER_ID, new AuctionSniper(auction, new SniperStateDisplayer(this))));
+                new AuctionMessageTranslator(SNIPER_ID, new AuctionSniper(auction, new SniperStateDisplayer(this), itemId)));
             auction.Chat = chat;
             connection.Open();
 
@@ -80,7 +84,22 @@ namespace Sniper
                 }));
 
             else
-                lblStatus.Text = status;
-        }       
+                snipers.SetStatusText(status);
+        }
+
+        public void SniperStatusChanged(SniperState newState, string status)
+        {
+            if (this.InvokeRequired)
+                this.Invoke(new MethodInvoker(() =>
+                {
+                    SniperStatusChanged(newState, status);
+                }));
+
+            else
+            {
+                snipers.SniperStatusChanged(newState, status);
+                gvSniper.Refresh();
+            }
+        }
     }
 }

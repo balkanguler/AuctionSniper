@@ -9,6 +9,8 @@ using System.Threading;
 using TestStack.White;
 using TestStack.White.Factory;
 using TestStack.White.UIItems;
+using TestStack.White.UIItems.Finders;
+using TestStack.White.UIItems.TableItems;
 using TestStack.White.UIItems.WindowItems;
 
 namespace SniperTest
@@ -23,11 +25,23 @@ namespace SniperTest
             this.timeoutMillis = timeoutMillis;
 
             Thread.Sleep(1000);
-            
+
             application = Application.Attach(Process.GetCurrentProcess().Id);
+            //application = Application.Attach(12392);
         }
 
-        internal void showSniperStatus(string expectedStatus)
+        public AuctionSniperDriver(int timeoutMillis, string[] args)
+        {
+            this.timeoutMillis = timeoutMillis;
+            
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = "Sniper.exe";
+            psi.Arguments = string.Join(" ", args);
+
+            application = Application.Launch(psi);
+        }
+
+        internal void showSniperStatus(string itemId, int lastPrice, int lastBid, string expectedStatus)
         {
             Assert.IsNotNull(application, "application is null");
 
@@ -37,17 +51,24 @@ namespace SniperTest
 
             Assert.IsNotNull(window, "window is null");
 
+            System.Diagnostics.Debug.WriteLine("--- items ---");
+            window.Items.ForEach(i => System.Diagnostics.Debug.WriteLine(i.Id.ToString() + "  " + i.GetType()));
 
-            Label statusLabel = window.Get<Label>("lblStatus");
+            var table = window.Get<Table>(SearchCriteria.ByAutomationId("gvSniper"));            
+            
+            Assert.IsNotNull(table, "table is null");
 
-            Assert.IsNotNull(statusLabel, "statusLabel is null");
-
-            StringAssert.AreEqualIgnoringCase(expectedStatus, statusLabel.Text);
+            StringAssert.AreEqualIgnoringCase(itemId, table.Rows[0].Cells[(int)Column.ITEM_IDENTIFIER].Value.ToString());
+            StringAssert.AreEqualIgnoringCase(lastPrice.ToString(), table.Rows[0].Cells[(int)Column.LAST_PRICE].Value.ToString());
+            StringAssert.AreEqualIgnoringCase(lastBid.ToString(), table.Rows[0].Cells[(int)Column.LAST_BID].Value.ToString());
+            StringAssert.AreEqualIgnoringCase(expectedStatus, table.Rows[0].Cells[(int)Column.SNIPER_STATUS].Value.ToString());
         }
+
+     
 
         internal void dispose()
         {
-            //application.Close();
+            application.Close();
         }
     }
 }

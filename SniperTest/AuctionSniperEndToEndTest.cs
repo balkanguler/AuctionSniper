@@ -27,15 +27,15 @@ namespace SniperTest
             auction.HasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
 
             auction.ReportPrice(1000, 98, "other bidder");
-            application.HasShownSniperIsBidding();
+            application.HasShownSniperIsBidding(1000, 1098); //last price, last bid
 
             auction.HasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
             
             auction.ReportPrice(1098, 97, ApplicationRunner.SNIPER_XMPP_ID);
-            application.HasShownSniperIsWinning();
+            application.HasShownSniperIsWinning(1098); //winning bid
             
             auction.AnnounceClosed();
-            application.ShowSniperHasWonAuction();
+            application.ShowSniperHasWonAuction(1098); //last price
             
         }
 

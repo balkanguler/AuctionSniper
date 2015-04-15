@@ -15,14 +15,16 @@ namespace SniperTest
         ISniperListener sniperListener;
         AuctionSniper sniper;
         IAuction auction;
+        private string ITEM_ID;
 
         [SetUp]
         public void Setup()
         {
             sniperListener = Substitute.For<ISniperListener>();
             auction = Substitute.For<IAuction>();
+            ITEM_ID = "test item";
 
-            sniper = new AuctionSniper(auction, sniperListener);
+            sniper = new AuctionSniper(auction, sniperListener, ITEM_ID);
         }
 
         [Test]
@@ -40,7 +42,7 @@ namespace SniperTest
             
             //In the original example it uses jMock states for keeping the method call
             bool called = false;
-            sniperListener.When(sl => sl.SniperBidding()).Do(x => called = true);
+            sniperListener.When(sl => sl.SniperBidding(Arg.Any<SniperState>())).Do(x => called = true);
 
             // If SniperBidding is called then SniperLost should be called.
             if (called)
@@ -75,11 +77,12 @@ namespace SniperTest
         {
             int price = 1001;
             int increment = 25;
+            int bid = price + increment;
 
             sniper.CurrentPrice(price, increment, PriceSource.FromOtherBidder);
 
             auction.Received().Bid(price + increment);
-            sniperListener.Received().SniperBidding();
+            sniperListener.Received().SniperBidding(Arg.Is<SniperState>(ss => ss.ItemId == ITEM_ID && ss.LastPrice == price & ss.LastBid == bid));
 
         }
     }

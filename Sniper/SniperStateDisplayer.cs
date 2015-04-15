@@ -17,9 +17,9 @@ namespace Sniper
             showStatus(Status.STATUS_LOST);
         }
 
-        public void SniperBidding()
+        public void SniperBidding(SniperState newState)
         {
-            showStatus(Status.STATUS_BIDDING);
+            statusChanged(newState, Status.STATUS_BIDDING);
         }
 
         public void SniperWinning()
@@ -30,6 +30,11 @@ namespace Sniper
         private void showStatus(string status)
         {
             form.ShowStatus(status);
+        }
+
+        private void statusChanged(SniperState newState, string status)
+        {
+            form.SniperStatusChanged(newState, status);
         }
 
 

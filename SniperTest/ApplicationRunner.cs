@@ -17,53 +17,35 @@ namespace SniperTest
         public static readonly string SNIPER_XMPP_ID = SNIPER_ID;
 
         private AuctionSniperDriver driver;
-        Thread thread;
-
+        private string itemId;
 
         internal void StartBiddingIn(FakeAuctionServer auction)
         {
-            thread = new Thread(new ParameterizedThreadStart((o) =>{
+            itemId = auction.ItemId;
 
-                Program.Main(new string[] {XMPP_HOSTNAME, XMPP_PORT, SNIPER_ID, SNIPER_PASSWORD, auction.ItemId});
-                
-            }));
-
-            thread.Start();
-
-
-            driver = new AuctionSniperDriver(1000);
-            driver.showSniperStatus(Status.STATUS_JOINING);
+            driver = new AuctionSniperDriver(1000, new string[] { XMPP_HOSTNAME, XMPP_PORT, SNIPER_ID, SNIPER_PASSWORD, auction.ItemId });
+            driver.showSniperStatus("", 0, 0, Status.STATUS_JOINING);
 
         }
-
-        internal void ShowSniperHasLostAuction()
-        {
-            driver.showSniperStatus(Status.STATUS_LOST);
-        }
-
         internal void Stop()
         {
             if (driver != null)
                 driver.dispose();
-
-            if (thread != null && thread.ThreadState == System.Threading.ThreadState.Running)
-                thread.Abort();
         }
 
-
-        internal void HasShownSniperIsBidding()
+        internal void HasShownSniperIsBidding(int lastPrice, int lastBid)
         {
-            driver.showSniperStatus(Status.STATUS_BIDDING);
+            driver.showSniperStatus(itemId, lastPrice, lastBid, Status.STATUS_BIDDING);
         }
 
-        internal void ShowSniperHasWonAuction()
+        internal void ShowSniperHasWonAuction(int lastPrice)
         {
-            driver.showSniperStatus(Status.STATUS_WON);
+            driver.showSniperStatus(itemId, lastPrice, lastPrice, Status.STATUS_WON);
         }
 
-        internal void HasShownSniperIsWinning()
+        internal void HasShownSniperIsWinning(int winningBid)
         {
-            driver.showSniperStatus(Status.STATUS_WINNING);
+            driver.showSniperStatus(itemId, winningBid, winningBid, Status.STATUS_WINNING);
         }
     }
 }

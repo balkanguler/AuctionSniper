@@ -28,34 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblStatus = new System.Windows.Forms.Label();
+            this.gvSniper = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.gvSniper)).BeginInit();
             this.SuspendLayout();
             // 
-            // lblStatus
+            // gvSniper
             // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(36, 47);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(35, 13);
-            this.lblStatus.TabIndex = 0;
-            this.lblStatus.Text = "label1";
+            this.gvSniper.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvSniper.Location = new System.Drawing.Point(12, 12);
+            this.gvSniper.Name = "gvSniper";
+            this.gvSniper.Size = new System.Drawing.Size(414, 84);
+            this.gvSniper.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
-            this.Controls.Add(this.lblStatus);
+            this.ClientSize = new System.Drawing.Size(429, 184);
+            this.Controls.Add(this.gvSniper);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.gvSniper)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.DataGridView gvSniper;
+
     }
 }
 
