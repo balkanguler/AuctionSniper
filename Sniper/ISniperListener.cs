@@ -13,5 +13,7 @@ namespace Sniper
         void SniperBidding();
 
         void SniperWinning();
+
+        void SniperWon();
     }
 }

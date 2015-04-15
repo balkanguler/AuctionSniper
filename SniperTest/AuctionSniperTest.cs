@@ -34,11 +34,32 @@ namespace SniperTest
         }
 
         [Test]
-        public void ReportstLostWhenAuctionClosesWhenBidding()
+        public void ReportstLostIfAuctionClosesWhenBidding()
         {
             sniper.CurrentPrice(123, 45, PriceSource.FromOtherBidder);
+            
+            //In the original example it uses jMock states for keeping the method call
+            bool called = false;
+            sniperListener.When(sl => sl.SniperBidding()).Do(x => called = true);
 
-            sniperListener.Received().SniperLost();
+            // If SniperBidding is called then SniperLost should be called.
+            if (called)
+                sniperListener.Received().SniperLost();
+        }
+
+        [Test]
+        public void ReportstWonWhenAuctionClosesWhenWinning()
+        {
+            sniper.CurrentPrice(123, 45, PriceSource.FromSniper);
+            sniper.AuctionClosed();
+
+            //In the original example it uses jMock states for keeping the method call
+            bool called = false;
+            sniperListener.When(sl => sl.SniperWinning()).Do(x => called = true);
+
+            // If SniperBidding is called then SniperLost should be called.
+            if (called)
+                sniperListener.Received().SniperWon();
         }
 
         [Test]

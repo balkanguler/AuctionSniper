@@ -35,7 +35,7 @@ namespace SniperTest
             application.HasShownSniperIsWinning();
             
             auction.AnnounceClosed();
-            application.ShowSniperHasLostAuction();
+            application.ShowSniperHasWonAuction();
             
         }
 

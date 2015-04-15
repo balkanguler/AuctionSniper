@@ -10,6 +10,7 @@ namespace Sniper
     {
         private ISniperListener sniperListener;
         private IAuction auction;
+        bool isWinning = false;
 
         public AuctionSniper(IAuction auction, ISniperListener sniperListener)
         {
@@ -20,14 +21,23 @@ namespace Sniper
 
         public void AuctionClosed()
         {
-            sniperListener.SniperLost();
+            if (isWinning)
+                sniperListener.SniperWon();
+            else
+                sniperListener.SniperLost();
         }
 
 
         public void CurrentPrice(int price, int increment, PriceSource priceSource)
         {
-            auction.Bid(price + increment);
-            sniperListener.SniperBidding();
+            isWinning = priceSource == PriceSource.FromSniper;
+            if (isWinning)
+                sniperListener.SniperWinning();
+            else
+            {
+                auction.Bid(price + increment);
+                sniperListener.SniperBidding();
+            }
 
             switch (priceSource)
             {

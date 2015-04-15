@@ -31,5 +31,11 @@ namespace Sniper
         {
             form.ShowStatus(status);
         }
+
+
+        public void SniperWon()
+        {
+            showStatus(Status.STATUS_WON);
+        }
     }
 }
