@@ -65,7 +65,7 @@ namespace Sniper
             auction = new XMPPAuction();
             chatManager = new ChatManager(connection);
             chat = chatManager.CreateChat(string.Format(ITEM_ID_AS_LOGIN, itemId), XMPP_HOSTNAME, AUCTION_RESOURCE,
-                new AuctionMessageTranslator(SNIPER_ID, new AuctionSniper(auction, new SniperStateDisplayer(this), itemId)));
+                new AuctionMessageTranslator(SNIPER_ID, new AuctionSniper(itemId, auction, new SniperStateDisplayer(this))));
             auction.Chat = chat;
             connection.Open();
 
@@ -87,17 +87,17 @@ namespace Sniper
                 snipers.SetStatusText(status);
         }
 
-        public void SniperStatusChanged(SniperState newState, string status)
+        public void SniperStatusChanged(SniperSnapshot newState)
         {
             if (this.InvokeRequired)
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    SniperStatusChanged(newState, status);
+                    SniperStatusChanged(newState);
                 }));
 
             else
             {
-                snipers.SniperStatusChanged(newState, status);
+                snipers.SniperStatusChanged(newState);
                 gvSniper.Refresh();
             }
         }

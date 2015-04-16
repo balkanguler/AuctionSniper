@@ -61,7 +61,7 @@ namespace SniperTest
             StringAssert.AreEqualIgnoringCase(itemId, table.Rows[0].Cells[(int)Column.ITEM_IDENTIFIER].Value.ToString());
             StringAssert.AreEqualIgnoringCase(lastPrice.ToString(), table.Rows[0].Cells[(int)Column.LAST_PRICE].Value.ToString());
             StringAssert.AreEqualIgnoringCase(lastBid.ToString(), table.Rows[0].Cells[(int)Column.LAST_BID].Value.ToString());
-            StringAssert.AreEqualIgnoringCase(expectedStatus, table.Rows[0].Cells[(int)Column.SNIPER_STATUS].Value.ToString());
+            StringAssert.AreEqualIgnoringCase(expectedStatus, table.Rows[0].Cells[(int)Column.SNIPER_STATE].Value.ToString());
         }
 
      

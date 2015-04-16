@@ -24,7 +24,7 @@ namespace SniperTest
             itemId = auction.ItemId;
 
             driver = new AuctionSniperDriver(1000, new string[] { XMPP_HOSTNAME, XMPP_PORT, SNIPER_ID, SNIPER_PASSWORD, auction.ItemId });
-            driver.showSniperStatus("", 0, 0, Status.STATUS_JOINING);
+            driver.showSniperStatus(itemId, 0, 0, Status.STATUS_JOINING);
 
         }
         internal void Stop()

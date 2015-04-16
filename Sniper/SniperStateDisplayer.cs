@@ -17,30 +17,23 @@ namespace Sniper
             showStatus(Status.STATUS_LOST);
         }
 
-        public void SniperBidding(SniperState newState)
+        public void SniperBidding(SniperSnapshot newSnapShot)
         {
-            statusChanged(newState, Status.STATUS_BIDDING);
+            SniperStateChanged(newSnapShot);
         }
-
-        public void SniperWinning()
-        {
-            showStatus(Status.STATUS_WINNING);
-        }
-
         private void showStatus(string status)
         {
             form.ShowStatus(status);
         }
 
-        private void statusChanged(SniperState newState, string status)
-        {
-            form.SniperStatusChanged(newState, status);
-        }
-
-
         public void SniperWon()
         {
             showStatus(Status.STATUS_WON);
+        }
+
+        public void SniperStateChanged(SniperSnapshot newSnapShot)
+        {
+            form.SniperStatusChanged(newSnapShot);
         }
     }
 }

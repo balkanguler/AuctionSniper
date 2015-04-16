@@ -11,6 +11,6 @@ namespace Sniper
         ITEM_IDENTIFIER,
         LAST_PRICE,
         LAST_BID,
-        SNIPER_STATUS
+        SNIPER_STATE
     }
 }

@@ -10,10 +10,10 @@ namespace Sniper
     {
         void SniperLost();
 
-        void SniperBidding(SniperState newState);
-
-        void SniperWinning();
+        void SniperBidding(SniperSnapshot newState);
 
         void SniperWon();
+
+        void SniperStateChanged(SniperSnapshot sniperSnapshot);
     }
 }

@@ -24,7 +24,7 @@ namespace SniperTest
             auction = Substitute.For<IAuction>();
             ITEM_ID = "test item";
 
-            sniper = new AuctionSniper(auction, sniperListener, ITEM_ID);
+            sniper = new AuctionSniper(ITEM_ID, auction, sniperListener);
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace SniperTest
             
             //In the original example it uses jMock states for keeping the method call
             bool called = false;
-            sniperListener.When(sl => sl.SniperBidding(Arg.Any<SniperState>())).Do(x => called = true);
+            sniperListener.When(sl => sl.SniperStateChanged(Arg.Is<SniperSnapshot>(ss => ss.State == SniperState.BIDDING))).Do(x => called = true);
 
             // If SniperBidding is called then SniperLost should be called.
             if (called)
@@ -56,20 +56,27 @@ namespace SniperTest
             sniper.AuctionClosed();
 
             //In the original example it uses jMock states for keeping the method call
-            bool called = false;
-            sniperListener.When(sl => sl.SniperWinning()).Do(x => called = true);
+            //bool called = false;
+            //sniperListener.When(sl => sl.SniperWinning()).Do(x => called = true);
 
-            // If SniperBidding is called then SniperLost should be called.
-            if (called)
-                sniperListener.Received().SniperWon();
+            //// If SniperBidding is called then SniperLost should be called.
+            //if (called)
+            //    sniperListener.Received().SniperWon();
         }
 
         [Test]
         public void ReportsIsWinningWhenCurrentPriceComesFromSniper()
         {
-            sniper.CurrentPrice(123, 45, PriceSource.FromSniper);
+            sniper.CurrentPrice(123, 12, PriceSource.FromOtherBidder);
+            sniper.CurrentPrice(135, 45, PriceSource.FromSniper);
 
-            sniperListener.Received().SniperWinning();
+            bool called = false;
+            sniperListener.When(sl => sl.SniperStateChanged(Arg.Is<SniperSnapshot>(ss => ss.State == SniperState.BIDDING))).Do(x => called = true);
+
+            if (called)                
+                sniperListener.Received().SniperStateChanged(Arg.Is<SniperSnapshot>
+                    (ss => ss.ItemId == ITEM_ID && ss.LastPrice == 135 & ss.LastBid == 135 &&  ss.State == SniperState.WINNING));
+            
         }
 
         [Test]
@@ -82,7 +89,9 @@ namespace SniperTest
             sniper.CurrentPrice(price, increment, PriceSource.FromOtherBidder);
 
             auction.Received().Bid(price + increment);
-            sniperListener.Received().SniperBidding(Arg.Is<SniperState>(ss => ss.ItemId == ITEM_ID && ss.LastPrice == price & ss.LastBid == bid));
+
+            sniperListener.Received().SniperStateChanged(Arg.Is<SniperSnapshot>
+                   (ss => ss.ItemId == ITEM_ID && ss.LastPrice == price & ss.LastBid == bid && ss.State == SniperState.BIDDING));
 
         }
     }

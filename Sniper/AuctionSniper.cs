@@ -11,13 +11,14 @@ namespace Sniper
         private ISniperListener sniperListener;
         private IAuction auction;
         bool isWinning = false;
-        string itemId;
-        public AuctionSniper(IAuction auction, ISniperListener sniperListener, string itemId)
+        private SniperSnapshot snapShot;
+
+        public AuctionSniper(string itemId, IAuction auction, ISniperListener sniperListener)
         {
-            // TODO: Complete member initialization
             this.auction = auction;
             this.sniperListener = sniperListener;
-            this.itemId = itemId;
+            this.snapShot = SniperSnapshot.Joining(itemId);
+            sniperListener.SniperStateChanged(snapShot);
         }
 
         public void AuctionClosed()
@@ -33,24 +34,14 @@ namespace Sniper
         {
             isWinning = priceSource == PriceSource.FromSniper;
             if (isWinning)
-                sniperListener.SniperWinning();
+                snapShot = snapShot.Winning(price);
             else
             {
                 int bid = price + increment;
                 auction.Bid(bid);
-                sniperListener.SniperBidding(new SniperState(itemId, price, bid));
+                snapShot = snapShot.Bidding(price, bid);
             }
-
-            //switch (priceSource)
-            //{
-            //    case PriceSource.FromSniper:
-            //        sniperListener.SniperWinning();
-            //        break;
-            //    case PriceSource.FromOtherBidder:
-            //        auction.Bid(price + increment);
-            //        sniperListener.SniperBidding(null);
-            //        break;
-            //}
+            sniperListener.SniperStateChanged(snapShot);
         }
     }
 }

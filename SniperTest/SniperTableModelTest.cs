@@ -22,12 +22,12 @@ namespace SniperTest
         [Test]
         public void SetSniperValuesInColumns()
         {
-            model.SniperStatusChanged(new SniperState("item id", 555, 666), Status.STATUS_BIDDING);
+            model.SniperStatusChanged(new SniperSnapshot("item id", 555, 666, SniperState.BIDDING));
 
             assertColumnEquals(Column.ITEM_IDENTIFIER, "item id");
             assertColumnEquals(Column.LAST_PRICE, 555.ToString());
             assertColumnEquals(Column.LAST_BID, 666.ToString());
-            assertColumnEquals(Column.SNIPER_STATUS, Status.STATUS_BIDDING);
+            assertColumnEquals(Column.SNIPER_STATE, Status.STATUS_BIDDING);
         }
 
         private void assertColumnEquals(Column column, object expected)
