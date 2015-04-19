@@ -11,7 +11,8 @@ namespace Sniper
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        
+        public static readonly string APPLICATION_TITLE = "Auction Sniper";
+
         static Form1 form;
 
         [STAThread]
@@ -19,7 +20,7 @@ namespace Sniper
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            form = new Form1();
+            form = new Form1(APPLICATION_TITLE);
             if (args != null && args.Length > 0)
                 form.Start(args[0], args[1], args[2], args[3], args[4]);
 

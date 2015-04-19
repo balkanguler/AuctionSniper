@@ -23,8 +23,10 @@ namespace SniperTest
         {
             itemId = auction.ItemId;
 
-            driver = new AuctionSniperDriver(1000, new string[] { XMPP_HOSTNAME, XMPP_PORT, SNIPER_ID, SNIPER_PASSWORD, auction.ItemId });
-            driver.showSniperStatus(itemId, 0, 0, Status.STATUS_JOINING);
+            driver = new AuctionSniperDriver(Program.APPLICATION_TITLE, 1000, new string[] { XMPP_HOSTNAME, XMPP_PORT, SNIPER_ID, SNIPER_PASSWORD, auction.ItemId });
+            driver.ShowsSniperStatus(itemId, 0, 0, Status.STATUS_JOINING);
+            driver.HasTitle(Program.APPLICATION_TITLE);
+            driver.HasColumnTitles();
 
         }
         internal void Stop()
@@ -35,17 +37,17 @@ namespace SniperTest
 
         internal void HasShownSniperIsBidding(int lastPrice, int lastBid)
         {
-            driver.showSniperStatus(itemId, lastPrice, lastBid, Status.STATUS_BIDDING);
+            driver.ShowsSniperStatus(itemId, lastPrice, lastBid, Status.STATUS_BIDDING);
         }
 
         internal void ShowSniperHasWonAuction(int lastPrice)
         {
-            driver.showSniperStatus(itemId, lastPrice, lastPrice, Status.STATUS_WON);
+            driver.ShowsSniperStatus(itemId, lastPrice, lastPrice, Status.STATUS_WON);
         }
 
         internal void HasShownSniperIsWinning(int winningBid)
         {
-            driver.showSniperStatus(itemId, winningBid, winningBid, Status.STATUS_WINNING);
+            driver.ShowsSniperStatus(itemId, winningBid, winningBid, Status.STATUS_WINNING);
         }
     }
 }

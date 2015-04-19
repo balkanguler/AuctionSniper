@@ -23,6 +23,7 @@ namespace Sniper
 
         public void Join()
         {
+            Console.WriteLine("Join message sending");
             SendMessage(string.Format(CommandFormat.JOIN_COMMAND_FORMAT));
         }
 

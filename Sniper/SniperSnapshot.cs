@@ -34,5 +34,25 @@ namespace Sniper
         {
             return new SniperSnapshot(ItemId, newLastPrice, newLastBid, SniperState.BIDDING);
         }
+
+        internal SniperSnapshot Closed()
+        {
+            return new SniperSnapshot(ItemId, LastPrice, LastBid, whenAuctionClosed());
+
+        }
+
+        private SniperState whenAuctionClosed()
+        {
+            Console.WriteLine("whenAuctionClosed. State: " + State.ToString());
+            if (State == SniperState.JOINING)
+                return SniperState.LOST;
+            if (State == SniperState.BIDDING)
+                return SniperState.LOST;
+            if (State == SniperState.WINNING)
+                return SniperState.WON;
+
+            //Lost, WON
+            throw new InvalidOperationException("Auction is already closed");
+        }
     }
 }

@@ -28,17 +28,16 @@ namespace Sniper
 
         SniperTableModel snipers = new SniperTableModel();
 
-        
-
         public static readonly string ITEM_ID_AS_LOGIN = "auction-{0}";
         public static readonly string AUCTION_RESOURCE = "Auction";
         public static readonly string AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "{0}/" + AUCTION_RESOURCE;
 
         private XmppClientConnection connection;
 
-        public Form1()
+        public Form1(string title)
         {
             InitializeComponent();
+            this.Text = title;
             gvSniper.DataSource = snipers;
         }
 
@@ -87,17 +86,18 @@ namespace Sniper
                 snipers.SetStatusText(status);
         }
 
-        public void SniperStatusChanged(SniperSnapshot newState)
+        public void SniperStatusChanged(SniperSnapshot newSnapShot)
         {
+ 
             if (this.InvokeRequired)
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    SniperStatusChanged(newState);
+                    SniperStatusChanged(newSnapShot);
                 }));
 
             else
             {
-                snipers.SniperStatusChanged(newState);
+                snipers.SniperStatusChanged(newSnapShot);
                 gvSniper.Refresh();
             }
         }

@@ -32,7 +32,8 @@ namespace SniperTest
         {
             sniper.AuctionClosed();
 
-            sniperListener.Received().SniperLost();
+            sniperListener.Received().SniperStateChanged(Arg.Is<SniperSnapshot>
+                    (ss => ss.State == SniperState.LOST));
         }
 
         [Test]

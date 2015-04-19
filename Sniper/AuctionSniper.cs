@@ -18,30 +18,40 @@ namespace Sniper
             this.auction = auction;
             this.sniperListener = sniperListener;
             this.snapShot = SniperSnapshot.Joining(itemId);
-            sniperListener.SniperStateChanged(snapShot);
+            notifyChange();
         }
 
         public void AuctionClosed()
         {
-            if (isWinning)
-                sniperListener.SniperWon();
-            else
-                sniperListener.SniperLost();
+            snapShot = snapShot.Closed();
+
+            Console.Write("auction closed: state: " + snapShot.State.ToString());
+            notifyChange();
         }
+
 
 
         public void CurrentPrice(int price, int increment, PriceSource priceSource)
         {
-            isWinning = priceSource == PriceSource.FromSniper;
-            if (isWinning)
-                snapShot = snapShot.Winning(price);
-            else
+            switch (priceSource)
             {
-                int bid = price + increment;
-                auction.Bid(bid);
-                snapShot = snapShot.Bidding(price, bid);
+                case PriceSource.FromSniper:
+                    snapShot = snapShot.Winning(price);
+                    break;
+                case PriceSource.FromOtherBidder:
+                    int bid = price + increment;
+                    auction.Bid(bid);
+                    snapShot = snapShot.Bidding(price, bid);
+                    break;
             }
+
+            notifyChange();
+        }
+
+        private void notifyChange()
+        {
             sniperListener.SniperStateChanged(snapShot);
         }
+
     }
 }
