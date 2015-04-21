@@ -12,27 +12,28 @@ namespace Sniper
         /// The main entry point for the application.
         /// </summary>
         public static readonly string APPLICATION_TITLE = "Auction Sniper";
-
-        static Form1 form;
+        public static readonly string NEW_ITEM_ID_NAME = "item id";
+        public static readonly string JOIN_BUTTON_NAME = "Join";
+        
+        static MainWindow form;
 
         [STAThread]
         public static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            form = new Form1(APPLICATION_TITLE);
-            if (args != null && args.Length > 0)
-                form.Start(args[0], args[1], args[2], args[3], args[4]);
-
+            form = new MainWindow(new SniperTableModel(), args);
+            form.AddUserRequestListener(new UserReqeuestListener());
             Application.Run(form);
 
-          //  form.Start(args[0], args[1], args[2], args[3], args[4]);
-            
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
 
-        public static void Start(string XMPP_HOSTNAME, string XMPP_PORT, string SNIPER_ID, string SNIPER_PASSWORD, string itemId)
-        {   
-           form.Start(XMPP_HOSTNAME, XMPP_PORT, SNIPER_ID, SNIPER_PASSWORD, itemId);
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine("Appdomain unhandled exception.");
+
+            Console.WriteLine(e.ToString());
         }
     }
 }

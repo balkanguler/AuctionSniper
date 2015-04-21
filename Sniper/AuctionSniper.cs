@@ -10,7 +10,6 @@ namespace Sniper
     {
         private ISniperListener sniperListener;
         private IAuction auction;
-        bool isWinning = false;
         private SniperSnapshot snapShot;
 
         public AuctionSniper(string itemId, IAuction auction, ISniperListener sniperListener)

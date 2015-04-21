@@ -13,7 +13,7 @@ namespace SniperTest
     [TestFixture]
     class AuctionMessageTranslatorTest
     {
-        public static readonly Chat UNUSED_CHAT;
+        public static readonly Chat UNUSED_CHAT = null;
         IAuctionEventListener listenerMock;
         AuctionMessageTranslator translator;
         private static string SNIPER_ID = "sniper";

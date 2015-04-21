@@ -17,37 +17,53 @@ namespace SniperTest
         public static readonly string SNIPER_XMPP_ID = SNIPER_ID;
 
         private AuctionSniperDriver driver;
-        private string itemId;
+       
 
-        internal void StartBiddingIn(FakeAuctionServer auction)
+        internal void StartBiddingIn(params FakeAuctionServer[] auctions)
         {
-            itemId = auction.ItemId;
+            driver = new AuctionSniperDriver(1000, constructArguments(auctions));
 
-            driver = new AuctionSniperDriver(Program.APPLICATION_TITLE, 1000, new string[] { XMPP_HOSTNAME, XMPP_PORT, SNIPER_ID, SNIPER_PASSWORD, auction.ItemId });
-            driver.ShowsSniperStatus(itemId, 0, 0, Status.STATUS_JOINING);
             driver.HasTitle(Program.APPLICATION_TITLE);
             driver.HasColumnTitles();
 
+
+            foreach (var auction in auctions)
+            {
+                driver.StartBiddingFor(auction.ItemId);
+                driver.ShowsSniperStatus(auction.ItemId, 0, 0, Status.STATUS_JOINING);
+            }
+        }
+
+        
+        private static string[] constructArguments(FakeAuctionServer[] auctions)
+        {
+            List<string> args = new List<string>();
+
+            args.AddRange(new string[] {XMPP_HOSTNAME, XMPP_PORT, SNIPER_ID, SNIPER_PASSWORD});
+            foreach (var auction in auctions)
+                args.Add(auction.ItemId);
+
+            return args.ToArray();
         }
         internal void Stop()
         {
             if (driver != null)
-                driver.dispose();
+                driver.dispose();            
         }
 
-        internal void HasShownSniperIsBidding(int lastPrice, int lastBid)
+        internal void HasShownSniperIsBidding(FakeAuctionServer auction, int lastPrice, int lastBid)
         {
-            driver.ShowsSniperStatus(itemId, lastPrice, lastBid, Status.STATUS_BIDDING);
+            driver.ShowsSniperStatus(auction.ItemId, lastPrice, lastBid, Status.STATUS_BIDDING);
         }
 
-        internal void ShowSniperHasWonAuction(int lastPrice)
+        internal void ShowSniperHasWonAuction(FakeAuctionServer auction, int lastPrice)
         {
-            driver.ShowsSniperStatus(itemId, lastPrice, lastPrice, Status.STATUS_WON);
+            driver.ShowsSniperStatus(auction.ItemId, lastPrice, lastPrice, Status.STATUS_WON);
         }
 
-        internal void HasShownSniperIsWinning(int winningBid)
+        internal void HasShownSniperIsWinning(FakeAuctionServer auction, int winningBid)
         {
-            driver.ShowsSniperStatus(itemId, winningBid, winningBid, Status.STATUS_WINNING);
+            driver.ShowsSniperStatus(auction.ItemId, winningBid, winningBid, Status.STATUS_WINNING);
         }
     }
 }

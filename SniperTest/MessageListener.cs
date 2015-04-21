@@ -29,7 +29,7 @@ namespace SniperTest
         {
             string message;
             Assert.That(messages.TryTake(out message, 5000), "Message is null ");
-            StringAssert.AreEqualIgnoringCase(message, expectedMessage);
+            StringAssert.AreEqualIgnoringCase(expectedMessage, message);
         }
     }
 }

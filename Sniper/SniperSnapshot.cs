@@ -20,22 +20,22 @@ namespace Sniper
             this.State = state;
         }
 
-        internal static SniperSnapshot Joining(string itemId)
+        public static SniperSnapshot Joining(string itemId)
         {
             return new SniperSnapshot(itemId, 0, 0, SniperState.JOINING);
         }
 
-        internal SniperSnapshot Winning(int newLastPrice)
+        public SniperSnapshot Winning(int newLastPrice)
         {
             return new SniperSnapshot(ItemId, newLastPrice, LastBid, SniperState.WINNING);
         }
 
-        internal SniperSnapshot Bidding(int newLastPrice, int newLastBid)
+        public SniperSnapshot Bidding(int newLastPrice, int newLastBid)
         {
             return new SniperSnapshot(ItemId, newLastPrice, newLastBid, SniperState.BIDDING);
         }
 
-        internal SniperSnapshot Closed()
+        public SniperSnapshot Closed()
         {
             return new SniperSnapshot(ItemId, LastPrice, LastBid, whenAuctionClosed());
 
@@ -53,6 +53,11 @@ namespace Sniper
 
             //Lost, WON
             throw new InvalidOperationException("Auction is already closed");
+        }
+
+        internal bool IsForSameItemAs(SniperSnapshot sniperSnapshot)
+        {
+            return ItemId.Equals(sniperSnapshot.ItemId);
         }
     }
 }
