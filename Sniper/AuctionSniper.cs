@@ -1,10 +1,11 @@
-﻿using System;
+﻿using AuctionSniper.Xmpp;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Sniper
+namespace AuctionSniper
 {
     public class AuctionSniper : IAuctionEventListener
     {

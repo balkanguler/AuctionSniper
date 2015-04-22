@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using Sniper;
+using AuctionSniper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SniperTest
+namespace AuctionSniper.Test
 {
     [TestFixture]
     public class MainWindowTest
@@ -31,7 +31,7 @@ namespace SniperTest
             mainWindow.TbItemId.Text = "an item-id";
             mainWindow.BtnJoin.PerformClick();
 
-            requestListenerMock.Received().JoinAuction(Arg.Any<agsXMPP.XmppClientConnection>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<SniperTableModel>(), "an item-id");
+            requestListenerMock.Received().JoinAuction(Arg.Any<agsXMPP.XmppClientConnection>(), Arg.Any<SniperTableModel>(), "an item-id");
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace SniperTest
+namespace AuctionSniper.Test
 {
     class MessageListener : IMessageListener
     {

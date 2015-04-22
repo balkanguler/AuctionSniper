@@ -1,8 +1,10 @@
 ﻿using agsXMPP;
 using agsXMPP.protocol.client;
 using agsXMPPChat;
+using AuctionSniper.Xmpp;
+using NSubstitute;
 using NUnit.Framework;
-using Sniper;
+using AuctionSniper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace SniperTest
+namespace AuctionSniper.Test
 {
     class FakeAuctionServer
     {
@@ -94,6 +96,23 @@ namespace SniperTest
         {
             messageListener.receivesAMessagesWithText(expectedMessage);
             StringAssert.AreEqualIgnoringCase(sniperId, currentChat.Peer);
+        }
+
+        public void ReceivesEventsFromAuctionServerAfterJoining()
+        {
+            IAuctionEventListener eventListenerMock = Substitute.For<IAuctionEventListener>();
+
+            IAuction auction = new XMPPAuction(connection, ItemId);
+            auction.AuctionEventListeners.Add(eventListenerMock);
+
+            auction.Join();
+            HasReceivedJoinRequestFromSniper(string.Format(ITEM_ID_AS_LOGIN, itemId));
+            AnnounceClosed();
+
+            //Sometimes test finishes before the client receives the Close message. So we set buffer for client to receive and process the message.
+            Thread.Sleep(1000);           
+
+            eventListenerMock.Received(1).AuctionClosed();
         }
     }
 }

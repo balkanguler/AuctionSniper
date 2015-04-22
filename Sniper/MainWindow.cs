@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Sniper
+namespace AuctionSniper
 {
     public partial class MainWindow : Form
     {
@@ -74,7 +74,7 @@ namespace Sniper
 
         private void btnJoin_Click(object sender, EventArgs e)
         {
-            userRequests.ForEach(r => r.JoinAuction(connection, SNIPER_ID, XMPP_HOSTNAME, snipers, tbItemId.Text));
+            userRequests.ForEach(r => r.JoinAuction(connection, snipers, tbItemId.Text));
         }
     }
 }

@@ -5,11 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AuctionSniper;
 using NSubstitute;
 using AuctionSniper.Xmpp;
 
-namespace AuctionSniper.Test
+namespace AuctionSniper.Xmpp.Test
 {
     [TestFixture]
     class AuctionMessageTranslatorTest

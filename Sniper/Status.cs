@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sniper
+namespace AuctionSniper
 {
     public class Status
     {

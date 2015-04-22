@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Sniper
+namespace AuctionSniper.Xmpp
 {
     public class MessageListener : IMessageListener
     {

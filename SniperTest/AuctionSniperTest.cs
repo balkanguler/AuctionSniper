@@ -1,13 +1,14 @@
-﻿using NSubstitute;
+﻿using AuctionSniper.Xmpp;
+using NSubstitute;
 using NUnit.Framework;
-using Sniper;
+using AuctionSniper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SniperTest
+namespace AuctionSniper.Test
 {
     [TestFixture]
     public class AuctionSniperTest

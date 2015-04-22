@@ -5,18 +5,18 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Sniper
+namespace AuctionSniper.Xmpp
 {
     public class AuctionMessageTranslator : MessageListener
     {
-        private IAuctionEventListener listener;
-        private string sniperId;        
+        private readonly List<IAuctionEventListener> auctionEventListeners;
+        private string sniperId;
 
-        public AuctionMessageTranslator(string sniperId, IAuctionEventListener listener)
+        public AuctionMessageTranslator(string sniperId, List<IAuctionEventListener> auctionEventListeners)
         {
             // TODO: Complete member initialization
             this.sniperId = sniperId;
-            this.listener = listener;
+            this.auctionEventListeners = auctionEventListeners;
         }
         public override void ProcessMessage(agsXMPPChat.Chat UNUSED_CHAT, string message)
         {
@@ -25,10 +25,10 @@ namespace Sniper
             AuctionEvent aEvent = AuctionEvent.From(message);
 
             string type = aEvent.Type;
-            if ("CLOSE".Equals(type))
-                listener.AuctionClosed();
+            if ("CLOSE".Equals(type))           
+                auctionEventListeners.ForEach(l => l.AuctionClosed());             
             else if ("PRICE".Equals(type))
-                listener.CurrentPrice(aEvent.CurrentPrice, aEvent.Increment, aEvent.IsFrom(sniperId));
+                auctionEventListeners.ForEach(l => l.CurrentPrice(aEvent.CurrentPrice, aEvent.Increment, aEvent.IsFrom(sniperId)));
 
         }
 

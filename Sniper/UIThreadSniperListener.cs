@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sniper
+namespace AuctionSniper
 {
     class UIThreadSniperListener : ISniperListener
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SniperTest
+namespace AuctionSniper.Test
 {
     [TestFixture]
     public class AuctionSniperEndToEndTest
@@ -40,6 +40,8 @@ namespace SniperTest
             
             auction.AnnounceClosed();
             application.ShowSniperHasWonAuction(auction, 1098); //last price
+
+            auction.ReceivesEventsFromAuctionServerAfterJoining();
             
         }
 
@@ -73,9 +75,16 @@ namespace SniperTest
 
         }
 
+        [Test]
+        public void ReceivesEventsFromAuctionServerAfteJoining()
+        {
+            
+        }
+
         [TearDown]
         public void TearDown()
         {
+            Console.WriteLine("Tearing Down...");
             auction.Stop();
             application.Stop();
         }

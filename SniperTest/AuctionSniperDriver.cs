@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Sniper;
+using AuctionSniper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,7 +13,7 @@ using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.TableItems;
 using TestStack.White.UIItems.WindowItems;
 
-namespace SniperTest
+namespace AuctionSniper.Test
 {
     class AuctionSniperDriver
     {
@@ -46,7 +46,7 @@ namespace SniperTest
             process = new Process();
 
             ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = "Sniper.exe";
+            psi.FileName = "AuctionSniper.exe";
             psi.Arguments = string.Join(" ", args);
             psi.UseShellExecute = false;
             psi.RedirectStandardOutput = true;
