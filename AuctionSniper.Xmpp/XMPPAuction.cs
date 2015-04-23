@@ -15,11 +15,6 @@ namespace AuctionSniper.Xmpp
         public static readonly string AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "{0}/" + AUCTION_RESOURCE;
         private readonly List<IAuctionEventListener> auctionEventListeners = new List<IAuctionEventListener>();
 
-        public List<IAuctionEventListener> AuctionEventListeners
-        {
-            get { return auctionEventListeners; }
-        } 
-
         public Chat Chat { get; set; }
 
 
@@ -45,6 +40,12 @@ namespace AuctionSniper.Xmpp
         {
             if (Chat != null)
                 Chat.SendMessage(message);
+        }
+
+
+        public void AddAuctionEventListener(IAuctionEventListener auctionEventListener)
+        {
+            auctionEventListeners.Add(auctionEventListener);
         }
     }
 }

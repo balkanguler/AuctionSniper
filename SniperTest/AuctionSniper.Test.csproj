@@ -79,11 +79,11 @@
     <Compile Include="AuctionSniperEndToEndTest.cs" />
     <Compile Include="AuctionSniperTest.cs" />
     <Compile Include="ChatManagerListener.cs" />
-    <Compile Include="AuctionMessageTranslatorTest.cs" />
     <Compile Include="FakeAuctionServer.cs" />
     <Compile Include="MainWindowTest.cs" />
     <Compile Include="MessageListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SniperLauncherTest.cs" />
     <Compile Include="SniperTableModelTest.cs" />
   </ItemGroup>
   <ItemGroup>

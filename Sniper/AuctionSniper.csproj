@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AuctionSniper.cs" />
     <Compile Include="Column.cs" />
+    <Compile Include="ISniperCollector.cs" />
     <Compile Include="IUserRequestListener.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
@@ -66,7 +67,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Status.cs" />
-    <Compile Include="UserReqeuestListener.cs" />
+    <Compile Include="SniperLauncher.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>

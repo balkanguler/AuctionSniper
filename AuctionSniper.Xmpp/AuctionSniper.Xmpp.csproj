@@ -42,10 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="XMPPAuctionHouse.cs" />
     <Compile Include="AuctionMessageTranslator.cs" />
     <Compile Include="CommandFormat.cs" />
     <Compile Include="IAuction.cs" />
     <Compile Include="IAuctionEventListener.cs" />
+    <Compile Include="IAuctionHouse.cs" />
     <Compile Include="MessageListener.cs" />
     <Compile Include="PriceSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

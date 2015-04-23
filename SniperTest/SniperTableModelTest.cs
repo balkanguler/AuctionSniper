@@ -28,7 +28,7 @@ namespace AuctionSniper.Test
         {
             SniperSnapshot joining = SniperSnapshot.Joining("item id");
             SniperSnapshot bidding = joining.Bidding(555, 666);
-            model.AddSniper(joining);
+            model.AddSniperSnapShot(joining);
 
             model.SniperStateChanged(bidding);
 
@@ -38,8 +38,8 @@ namespace AuctionSniper.Test
         [Test]
         public void HoldsSnipersInAdditionOrder()
         {
-            model.AddSniper(SniperSnapshot.Joining("item 0"));
-            model.AddSniper(SniperSnapshot.Joining("item 1"));
+            model.AddSniperSnapShot(SniperSnapshot.Joining("item 0"));
+            model.AddSniperSnapShot(SniperSnapshot.Joining("item 1"));
 
             StringAssert.AreEqualIgnoringCase("item 0", cellValue(0, Column.ITEM_IDENTIFIER).ToString());
             StringAssert.AreEqualIgnoringCase("item 1", cellValue(1, Column.ITEM_IDENTIFIER).ToString());
@@ -64,7 +64,7 @@ namespace AuctionSniper.Test
 
             Assert.AreEqual(0, model.Rows.Count);
 
-            model.AddSniper(joining);
+            model.AddSniperSnapShot(joining);
 
             Assert.AreEqual(1, model.Rows.Count);
 

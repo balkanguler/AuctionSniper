@@ -25,7 +25,8 @@ namespace AuctionSniper.Test
             auction = Substitute.For<IAuction>();
             ITEM_ID = "test item";
 
-            sniper = new AuctionSniper(ITEM_ID, auction, sniperListener);
+            sniper = new AuctionSniper(ITEM_ID, auction);
+            sniper.AddSniperListener(sniperListener);
         }
 
         [Test]

@@ -12,13 +12,18 @@ namespace AuctionSniper
         private ISniperListener sniperListener;
         private IAuction auction;
         private SniperSnapshot snapShot;
+        private string itemId;
 
-        public AuctionSniper(string itemId, IAuction auction, ISniperListener sniperListener)
+        public string ItemId
         {
+            get { return itemId; }
+        }
+
+        public AuctionSniper(string itemId, IAuction auction)
+        {
+            this.itemId = itemId;
             this.auction = auction;
-            this.sniperListener = sniperListener;
             this.snapShot = SniperSnapshot.Joining(itemId);
-            notifyChange();
         }
 
         public void AuctionClosed()
@@ -29,7 +34,10 @@ namespace AuctionSniper
             notifyChange();
         }
 
-
+        public void AddSniperListener(ISniperListener sniperListener)
+        {
+            this.sniperListener = sniperListener;
+        }
 
         public void CurrentPrice(int price, int increment, PriceSource priceSource)
         {
@@ -50,8 +58,11 @@ namespace AuctionSniper
 
         private void notifyChange()
         {
-            sniperListener.SniperStateChanged(snapShot);
+            if (sniperListener != null)
+                sniperListener.SniperStateChanged(snapShot);
         }
 
+
+        public SniperSnapshot SnapShot { get { return snapShot; } }
     }
 }

@@ -31,7 +31,7 @@ namespace AuctionSniper.Test
             mainWindow.TbItemId.Text = "an item-id";
             mainWindow.BtnJoin.PerformClick();
 
-            requestListenerMock.Received().JoinAuction(Arg.Any<agsXMPP.XmppClientConnection>(), Arg.Any<SniperTableModel>(), "an item-id");
+            requestListenerMock.Received().JoinAuction(Arg.Any<string>(), "an item-id");
         }
     }
 }

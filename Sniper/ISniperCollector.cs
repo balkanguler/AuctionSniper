@@ -1,5 +1,4 @@
-﻿using agsXMPP;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AuctionSniper
 {
-    public interface IUserRequestListener
+    public interface ISniperCollector
     {
-        void JoinAuction(string sniperId, string itemId);
+        void AddSniper(AuctionSniper sniper);
     }
 }

@@ -103,7 +103,7 @@ namespace AuctionSniper.Test
             IAuctionEventListener eventListenerMock = Substitute.For<IAuctionEventListener>();
 
             IAuction auction = new XMPPAuction(connection, ItemId);
-            auction.AuctionEventListeners.Add(eventListenerMock);
+            auction.AddAuctionEventListener(eventListenerMock);
 
             auction.Join();
             HasReceivedJoinRequestFromSniper(string.Format(ITEM_ID_AS_LOGIN, itemId));
