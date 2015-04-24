@@ -179,5 +179,21 @@ namespace AuctionSniper.Test
             sniperListener.Received(1).SniperStateChanged(new SniperSnapshot(item.Identifier, 210, 145, SniperState.LOSING));
             sniperListener.DidNotReceive().SniperStateChanged(new SniperSnapshot(item.Identifier, 210, 255, SniperState.BIDDING));
         }
+
+        [Test]
+        public void ReportsFailedIfAuctionFailsWhenBidding()
+        {
+            int price = 1001;
+            int increment = 25;
+            int bid = price + increment;
+
+            sniper.CurrentPrice(price, increment, PriceSource.FromOtherBidder);
+            sniperListener.Received().SniperStateChanged(new SniperSnapshot(item.Identifier, price, bid, SniperState.BIDDING));
+
+            sniper.CurrentPrice(bid, increment, PriceSource.FromOtherBidder);
+            sniper.AuctionFailed();
+            sniperListener.Received().SniperStateChanged(new SniperSnapshot(item.Identifier, 0, 0, SniperState.FAILED));
+        }
     }
 }
+

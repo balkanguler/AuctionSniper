@@ -71,5 +71,12 @@ namespace AuctionSniper
 
 
         public SniperSnapshot SnapShot { get { return snapShot; } }
+
+
+        public void AuctionFailed()
+        {
+            snapShot = snapShot.Failed();
+            notifyChange();
+        }
     }
 }

@@ -11,14 +11,16 @@ namespace AuctionSniper.Xmpp
     {
         public static readonly string AUCTION_RESOURCE = "Auction";        
         private XmppClientConnection connection;
+        private IXMPPFailureReporter failureReporter;
 
         public XMPPAuctionHouse(XmppClientConnection connection)
         {
             this.connection = connection;
+            this.failureReporter = new LoggingXMPPFailureReporter(new Logger());
         }
         public IAuction AuctionFor(Item item)
         {
-            return new XMPPAuction(connection, item);
+            return new XMPPAuction(connection, item, failureReporter);
         }
 
         public static XMPPAuctionHouse Connect(string hostname, string port, string username, string password)

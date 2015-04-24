@@ -77,5 +77,10 @@ namespace AuctionSniper
         {
             return new SniperSnapshot(ItemId, price, LastBid, SniperState.LOSING);
         }
+
+        internal SniperSnapshot Failed()
+        {
+            return new SniperSnapshot(ItemId, 0, 0, SniperState.FAILED);
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace AuctionSniper.Test
         public static readonly int XMPP_PORT = 5222;
 
         private static readonly string AUCTION_PASSWORD = "sniper";
-        private static readonly MessageListener messageListener = new MessageListener();
+        private readonly MessageListener messageListener = new MessageListener();
 
         private readonly Item item;
         private readonly XmppClientConnection connection;
@@ -102,7 +102,7 @@ namespace AuctionSniper.Test
         {
             IAuctionEventListener eventListenerMock = Substitute.For<IAuctionEventListener>();
 
-            IAuction auction = new XMPPAuction(connection, item);
+            IAuction auction = new XMPPAuction(connection, item, Substitute.For<IXMPPFailureReporter>());
             auction.AddAuctionEventListener(eventListenerMock);
 
             auction.Join();
@@ -114,6 +114,11 @@ namespace AuctionSniper.Test
 
             eventListenerMock.Received(1).AuctionClosed();
             
+        }
+
+        internal void SendInvalidMessageContaining(string brokenMessage)
+        {
+            currentChat.SendMessage(brokenMessage);
         }
     }
 }

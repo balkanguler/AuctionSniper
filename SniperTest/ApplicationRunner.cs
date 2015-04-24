@@ -16,11 +16,13 @@ namespace AuctionSniper.Test
         public static readonly string XMPP_PORT = "5222";
         public static readonly string SNIPER_XMPP_ID = SNIPER_ID;
 
+        private AuctionLogDriver logDriver = new AuctionLogDriver();
         private AuctionSniperDriver driver;
        
 
         internal void StartBiddingIn(params FakeAuctionServer[] auctions)
         {
+            logDriver.ClearLog();
             driver = new AuctionSniperDriver(1000, constructArguments(auctions, Int32.MaxValue));
 
             driver.HasTitle(Program.APPLICATION_TITLE);
@@ -36,6 +38,8 @@ namespace AuctionSniper.Test
 
         internal void StartBiddingWithStopPrice(int stopPrice, params FakeAuctionServer[] auctions)
         {
+            logDriver.ClearLog();
+
             driver = new AuctionSniperDriver(1000, constructArguments(auctions, stopPrice));
 
             driver.HasTitle(Program.APPLICATION_TITLE);
@@ -88,6 +92,16 @@ namespace AuctionSniper.Test
         internal void ShowsSniperHasLostAuction(FakeAuctionServer auction, int lastPrice, int lastBid)
         {
             driver.ShowsSniperStatus(auction.Item, lastPrice, lastBid, Status.STATUS_LOST);
+        }
+
+        internal void ReportsInvalidMessage(FakeAuctionServer auction, string brokenMessage)
+        {
+            logDriver.HasEntry(brokenMessage);
+        }
+
+        internal void ShowsSniperHasFailed(FakeAuctionServer auction)
+        {
+            driver.ShowsSniperStatus(auction.Item, 0, 0, Status.STATUS_FAILED);
         }
     }
 }

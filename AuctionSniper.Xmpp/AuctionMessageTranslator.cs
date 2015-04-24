@@ -10,26 +10,41 @@ namespace AuctionSniper.Xmpp
     public class AuctionMessageTranslator : MessageListener
     {
         private readonly List<IAuctionEventListener> auctionEventListeners;
+        IXMPPFailureReporter failureReporter;
         private string sniperId;
 
-        public AuctionMessageTranslator(string sniperId, List<IAuctionEventListener> auctionEventListeners)
+        public AuctionMessageTranslator(string sniperId, List<IAuctionEventListener> auctionEventListeners, IXMPPFailureReporter failureReporter)
         {
             // TODO: Complete member initialization
             this.sniperId = sniperId;
             this.auctionEventListeners = auctionEventListeners;
+            this.failureReporter = failureReporter;
         }
         public override void ProcessMessage(agsXMPPChat.Chat UNUSED_CHAT, string message)
+        {
+            try
+            {
+                translate(message);
+            }
+            catch (Exception ex)
+            {
+                failureReporter.CannotTranslateMessage(sniperId, message, ex);
+                auctionEventListeners.ForEach(l => l.AuctionFailed());
+            }
+
+        }
+
+        private void translate(string message)
         {
             var eventList = unpackEventFrom(message);
 
             AuctionEvent aEvent = AuctionEvent.From(message);
 
             string type = aEvent.Type;
-            if ("CLOSE".Equals(type))           
-                auctionEventListeners.ForEach(l => l.AuctionClosed());             
+            if ("CLOSE".Equals(type))
+                auctionEventListeners.ForEach(l => l.AuctionClosed());
             else if ("PRICE".Equals(type))
                 auctionEventListeners.ForEach(l => l.CurrentPrice(aEvent.CurrentPrice, aEvent.Increment, aEvent.IsFrom(sniperId)));
-
         }
 
 
@@ -89,7 +104,8 @@ namespace AuctionSniper.Xmpp
         {
             AuctionEvent aEvent = new AuctionEvent();
 
-            foreach (string field in fieldsIn(message)){
+            foreach (string field in fieldsIn(message))
+            {
                 aEvent.addField(field);
             }
 

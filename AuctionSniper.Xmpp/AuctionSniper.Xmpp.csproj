@@ -42,7 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatDisconnector.cs" />
+    <Compile Include="ILogger.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="IXMPPFailureReporter.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="LoggingXMPPFailureReporter.cs" />
     <Compile Include="XMPPAuctionHouse.cs" />
     <Compile Include="AuctionMessageTranslator.cs" />
     <Compile Include="CommandFormat.cs" />

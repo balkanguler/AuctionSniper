@@ -15,14 +15,27 @@ namespace AuctionSniper.Xmpp
         public static readonly string AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "{0}/" + AUCTION_RESOURCE;
         private readonly List<IAuctionEventListener> auctionEventListeners = new List<IAuctionEventListener>();
 
+        IXMPPFailureReporter failureReporter;
         public Chat Chat { get; set; }
 
 
-        public XMPPAuction(XmppClientConnection connection, Item item)
+        public XMPPAuction(XmppClientConnection connection, Item item, IXMPPFailureReporter failureReporter)
         {
+            this.failureReporter = failureReporter;
+            AuctionMessageTranslator translator = translatorFor(connection);
             ChatManager chatManager = new ChatManager(connection);
             Chat = chatManager.CreateChat(string.Format(ITEM_ID_AS_LOGIN, item.Identifier), connection.Server, AUCTION_RESOURCE,
-                new AuctionMessageTranslator(connection.Username, auctionEventListeners));
+                translator);
+            auctionEventListeners.Add(chatDisconnectorFor(translator, Chat));
+        }
+
+        private IAuctionEventListener chatDisconnectorFor(AuctionMessageTranslator translator, Chat chat)
+        {
+            return new ChatDisconnector(translator, chat);
+        }
+        private AuctionMessageTranslator translatorFor(XmppClientConnection connection)
+        {
+            return new AuctionMessageTranslator(connection.Username, auctionEventListeners, failureReporter);
         }
 
         public void Bid(int amount)

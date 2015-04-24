@@ -10,5 +10,7 @@ namespace AuctionSniper.Xmpp
         void AuctionClosed();
 
         void CurrentPrice(int price, int increment, PriceSource priceSource);
+
+        void AuctionFailed();
     }
 }

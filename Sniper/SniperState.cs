@@ -13,7 +13,8 @@ namespace AuctionSniper
         WINNING,
         LOSING,
         LOST,
-        WON
+        WON,
+        FAILED
         
     }
 }

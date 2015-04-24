@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationRunner.cs" />
+    <Compile Include="AuctionLogDriver.cs" />
     <Compile Include="AuctionSniperDriver.cs" />
     <Compile Include="AuctionSniperEndToEndTest.cs" />
     <Compile Include="AuctionSniperTest.cs" />

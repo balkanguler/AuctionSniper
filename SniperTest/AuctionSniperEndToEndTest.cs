@@ -47,14 +47,14 @@ namespace AuctionSniper.Test
         }
 
         [Test]
-        public void SniperBidForMultipleItems()
+        public void SniperBidsForMultipleItems()
         {
             auction.StartSellingItem();
             auction2.StartSellingItem();
 
             application.StartBiddingIn(auction, auction2);
             auction.HasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
-            auction.HasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
+            auction2.HasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
 
             auction.ReportPrice(1000, 98, "other bidder");
             auction.HasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
@@ -80,7 +80,8 @@ namespace AuctionSniper.Test
         public void SniperLosesAnAuctionWhenThePriceIsTooHigh()
         {
             auction = new FakeAuctionServer(new Item("item-54321", 1100));
-            auction.StartSellingItem();            
+            auction.StartSellingItem();
+            
             application.StartBiddingWithStopPrice(1100, auction);
             auction.HasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
 
@@ -115,6 +116,38 @@ namespace AuctionSniper.Test
 
             auction.AnnounceClosed();
             application.ShowsSniperHasLostAuction(auction, 1000, 1098);
+        }
+
+        [Test]
+        public void SniperReportsInvalidAuctionMessageAndStopsRespondingToEvents()
+        {
+            string brokenMessage = "a broken message";
+
+            auction.StartSellingItem();
+            auction2.StartSellingItem();
+
+            application.StartBiddingIn(auction, auction2);
+            auction.HasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
+
+            auction.ReportPrice(500, 20, "other bidder");
+            auction.HasReceivedBid(520, ApplicationRunner.SNIPER_XMPP_ID);
+
+            auction.SendInvalidMessageContaining(brokenMessage);
+            application.ShowsSniperHasFailed(auction);
+
+            auction.ReportPrice(520, 21, "other bidder");
+            waitForAnotherAuctionEvent();
+
+            application.ReportsInvalidMessage(auction, brokenMessage);
+            application.ShowsSniperHasFailed(auction);
+
+        }
+
+        private void waitForAnotherAuctionEvent()
+        {
+            auction2.HasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
+            auction2.ReportPrice(600, 6, "other bidder");
+            application.HasShownSniperIsBidding(auction2, 600, 606);
         }
 
         [TearDown]
