@@ -13,13 +13,13 @@ namespace AuctionSniper.Test
     [TestFixture]
     public class MainWindowTest
     {
-        private  SniperTableModel tableModel;
+        private  SniperPortfolio portfolio;
         private  MainWindow mainWindow;
         [SetUp]
         public void SetUp()
         {
-            tableModel = new SniperTableModel();
-            mainWindow = new MainWindow(tableModel, null);
+            portfolio = new SniperPortfolio();
+            mainWindow = new MainWindow(portfolio, null);
         }
 
         public void MakeUserRequestsWhenJoinButtonClicked()

@@ -29,11 +29,11 @@ namespace AuctionSniper
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            SniperTableModel tableModel = new SniperTableModel();
-
-            form = new MainWindow(tableModel, args[ARG_USERNAME]);
+            SniperPortfolio portfolio = new SniperPortfolio();
+            
+            form = new MainWindow(portfolio, args[ARG_USERNAME]);
             XMPPAuctionHouse auctionHouse = XMPPAuctionHouse.Connect(args[ARG_HOSTNAME], args[ARG_PORT], args[ARG_USERNAME], args[ARG_PASSWORD]);
-            form.AddUserRequestListener(new SniperLauncher(auctionHouse, tableModel));
+            form.AddUserRequestListener(new SniperLauncher(auctionHouse, portfolio));
             Application.Run(form);
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

@@ -37,21 +37,21 @@
             // gvSniper
             // 
             this.gvSniper.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvSniper.Location = new System.Drawing.Point(12, 88);
+            this.gvSniper.Location = new System.Drawing.Point(12, 52);
             this.gvSniper.Name = "gvSniper";
-            this.gvSniper.Size = new System.Drawing.Size(414, 84);
+            this.gvSniper.Size = new System.Drawing.Size(588, 178);
             this.gvSniper.TabIndex = 1;
             // 
             // tbItemId
             // 
-            this.tbItemId.Location = new System.Drawing.Point(29, 26);
+            this.tbItemId.Location = new System.Drawing.Point(12, 12);
             this.tbItemId.Name = "tbItemId";
             this.tbItemId.Size = new System.Drawing.Size(127, 20);
             this.tbItemId.TabIndex = 2;
             // 
             // btnJoin
             // 
-            this.btnJoin.Location = new System.Drawing.Point(180, 23);
+            this.btnJoin.Location = new System.Drawing.Point(164, 10);
             this.btnJoin.Name = "btnJoin";
             this.btnJoin.Size = new System.Drawing.Size(75, 23);
             this.btnJoin.TabIndex = 3;
@@ -63,7 +63,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(498, 268);
+            this.ClientSize = new System.Drawing.Size(610, 242);
             this.Controls.Add(this.btnJoin);
             this.Controls.Add(this.tbItemId);
             this.Controls.Add(this.gvSniper);

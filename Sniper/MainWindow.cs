@@ -22,15 +22,18 @@ namespace AuctionSniper
         SniperTableModel snipers;
         readonly List<IUserRequestListener> sniperLaunchers = new List<IUserRequestListener>();
 
-        public MainWindow(SniperTableModel tableModel, string sniperId)
+        public MainWindow(SniperPortfolio portfolio, string sniperId)
         {
             InitializeComponent();
             this.Text = Program.APPLICATION_TITLE;
             tbItemId.Name = Program.NEW_ITEM_ID_NAME;
             btnJoin.Name = Program.JOIN_BUTTON_NAME;
+            SniperTableModel tableModel = new SniperTableModel();
+            portfolio.AddPortfolioListener(tableModel);
             snipers = tableModel;
             gvSniper.DataSource = snipers;
             this.sniperId = sniperId;
+
         }
 
         public void AddUserRequestListener(IUserRequestListener userRequestListener)
