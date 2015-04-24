@@ -10,7 +10,7 @@ namespace AuctionSniper
     public class SniperTableModel : DataTable, IPortfolioListener
     {
         static readonly SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, SniperState.JOINING);
-        static readonly string[] STATUS_TEXT = new string[] { Status.STATUS_JOINING, Status.STATUS_BIDDING, Status.STATUS_WINNING, Status.STATUS_LOST, Status.STATUS_WON };
+        static readonly string[] STATUS_TEXT = new string[] { Status.STATUS_JOINING, Status.STATUS_BIDDING, Status.STATUS_WINNING, Status.STATUS_LOSING,  Status.STATUS_LOST, Status.STATUS_WON };
 
         List<SniperSnapshot> snapShots = new List<SniperSnapshot>();
 

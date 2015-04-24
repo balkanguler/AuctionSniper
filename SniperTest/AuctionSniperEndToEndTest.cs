@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using AuctionSniper.Xmpp;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,10 @@ namespace AuctionSniper.Test
         [SetUp]
         public void Setup()
         {
-            auction = new FakeAuctionServer("item-54321");
-            auction2 = new FakeAuctionServer("item-65432");
+            auction = new FakeAuctionServer( new Item("item-54321", Int32.MaxValue));
+            auction2 = new FakeAuctionServer(new Item("item-65432", Int32.MaxValue));
             application = new ApplicationRunner();
+            MessageListener.ClearQueue();
         }
 
         [Test]
@@ -42,7 +44,6 @@ namespace AuctionSniper.Test
             application.ShowSniperHasWonAuction(auction, 1098); //last price
 
             auction.ReceivesEventsFromAuctionServerAfterJoining();
-            
         }
 
         [Test]
@@ -76,9 +77,44 @@ namespace AuctionSniper.Test
         }
 
         [Test]
-        public void ReceivesEventsFromAuctionServerAfteJoining()
+        public void SniperLosesAnAuctionWhenThePriceIsTooHigh()
         {
-            
+            auction = new FakeAuctionServer(new Item("item-54321", 1100));
+            auction.StartSellingItem();            
+            application.StartBiddingWithStopPrice(1100, auction);
+            auction.HasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
+
+            auction.ReportPrice(1000, 98, "other bidder");
+            application.HasShownSniperIsBidding(auction, 1000, 1098);
+
+            auction.HasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
+
+            auction.ReportPrice(1197, 10, "third party");
+            application.HasShownSniperIsLosing(auction, 1197, 1098);
+
+            auction.ReportPrice(1207, 10, "fourth party");
+            application.HasShownSniperIsLosing(auction, 1207, 1098);
+
+            auction.AnnounceClosed();
+            application.ShowsSniperHasLostAuction(auction, 1207, 1098);
+        }
+
+       
+
+        [Test]
+        public void SniperMakesAHigherBidButLoses()
+        {
+            auction.StartSellingItem();
+            application.StartBiddingIn(auction);
+            auction.HasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID);
+
+            auction.ReportPrice(1000, 98, "other bidder");
+            application.HasShownSniperIsBidding(auction, 1000, 1098);
+
+            auction.HasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
+
+            auction.AnnounceClosed();
+            application.ShowsSniperHasLostAuction(auction, 1000, 1098);
         }
 
         [TearDown]

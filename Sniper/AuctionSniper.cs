@@ -12,18 +12,18 @@ namespace AuctionSniper
         private ISniperListener sniperListener;
         private IAuction auction;
         private SniperSnapshot snapShot;
-        private string itemId;
+        private Item item;
 
-        public string ItemId
+        public Item Item
         {
-            get { return itemId; }
+            get { return item; }
         }
 
-        public AuctionSniper(string itemId, IAuction auction)
+        public AuctionSniper(Item item, IAuction auction)
         {
-            this.itemId = itemId;
+            this.item = item;
             this.auction = auction;
-            this.snapShot = SniperSnapshot.Joining(itemId);
+            this.snapShot = SniperSnapshot.Joining(item.Identifier);
         }
 
         public void AuctionClosed()
@@ -48,8 +48,15 @@ namespace AuctionSniper
                     break;
                 case PriceSource.FromOtherBidder:
                     int bid = price + increment;
-                    auction.Bid(bid);
-                    snapShot = snapShot.Bidding(price, bid);
+                    if (item.AllowsBid(bid))
+                    {
+                        auction.Bid(bid);
+                        snapShot = snapShot.Bidding(price, bid);
+                    }
+                    else
+                    {
+                        snapShot = snapShot.Losing(price);
+                    }
                     break;
             }
 

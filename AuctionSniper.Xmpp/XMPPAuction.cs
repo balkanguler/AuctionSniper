@@ -18,10 +18,10 @@ namespace AuctionSniper.Xmpp
         public Chat Chat { get; set; }
 
 
-        public XMPPAuction(XmppClientConnection connection, string itemId)
+        public XMPPAuction(XmppClientConnection connection, Item item)
         {
             ChatManager chatManager = new ChatManager(connection);
-            Chat = chatManager.CreateChat(string.Format(ITEM_ID_AS_LOGIN, itemId), connection.Server, AUCTION_RESOURCE,
+            Chat = chatManager.CreateChat(string.Format(ITEM_ID_AS_LOGIN, item.Identifier), connection.Server, AUCTION_RESOURCE,
                 new AuctionMessageTranslator(connection.Username, auctionEventListeners));
         }
 

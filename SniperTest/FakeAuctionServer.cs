@@ -24,21 +24,21 @@ namespace AuctionSniper.Test
         private static readonly string AUCTION_PASSWORD = "sniper";
         private static readonly MessageListener messageListener = new MessageListener();
 
-        private readonly string itemId;
+        private readonly Item item;
         private readonly XmppClientConnection connection;
 
         private Chat currentChat;
 
-        public FakeAuctionServer(string itemId)
+        public FakeAuctionServer(Item item)
         {
-            this.itemId = itemId;
+            this.item = item;
             connection = new XmppClientConnection(XMPP_HOSTNAME, XMPP_PORT);
         }
 
         internal void StartSellingItem()
         {
             Thread.Sleep(2000);
-            Jid jid = new Jid(string.Format(ITEM_ID_AS_LOGIN, itemId), XMPP_HOSTNAME, AUCTION_RESOURCE);
+            Jid jid = new Jid(string.Format(ITEM_ID_AS_LOGIN, item.Identifier), XMPP_HOSTNAME, AUCTION_RESOURCE);
 
             connection.Password = AUCTION_PASSWORD;
             connection.Username = jid.User;
@@ -78,7 +78,7 @@ namespace AuctionSniper.Test
             connection.Close();
         }
 
-        public string ItemId { get { return itemId; } }
+        public Item Item { get { return item; } }
 
         internal void ReportPrice(int price, int incerement, string bidder)
         {
@@ -102,17 +102,18 @@ namespace AuctionSniper.Test
         {
             IAuctionEventListener eventListenerMock = Substitute.For<IAuctionEventListener>();
 
-            IAuction auction = new XMPPAuction(connection, ItemId);
+            IAuction auction = new XMPPAuction(connection, item);
             auction.AddAuctionEventListener(eventListenerMock);
 
             auction.Join();
-            HasReceivedJoinRequestFromSniper(string.Format(ITEM_ID_AS_LOGIN, itemId));
+            HasReceivedJoinRequestFromSniper(string.Format(ITEM_ID_AS_LOGIN, item.Identifier));
             AnnounceClosed();
 
             //Sometimes test finishes before the client receives the Close message. So we set buffer for client to receive and process the message.
             Thread.Sleep(1000);           
 
             eventListenerMock.Received(1).AuctionClosed();
+            
         }
     }
 }

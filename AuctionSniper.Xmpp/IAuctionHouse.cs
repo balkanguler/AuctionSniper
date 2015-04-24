@@ -9,6 +9,6 @@ namespace AuctionSniper.Xmpp
 {
     public interface IAuctionHouse
     {
-        IAuction AuctionFor(string itemId);
+        IAuction AuctionFor(Item item);
     }
 }

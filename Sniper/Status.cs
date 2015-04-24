@@ -13,6 +13,7 @@ namespace AuctionSniper
         public static readonly string STATUS_BIDDING = "Bidding";
         public static readonly string STATUS_WINNING = "Winning";
         public static readonly string STATUS_WON = "Won";
+        public static readonly string STATUS_LOSING = "Losing";
 
         public static string GetStateText(SniperState state)
         {
@@ -24,6 +25,8 @@ namespace AuctionSniper
                 return STATUS_WINNING;
             if (state == SniperState.WON)
                 return STATUS_WON;
+            if (state == SniperState.LOSING)
+                return STATUS_LOSING;
 
             return STATUS_LOST;
 

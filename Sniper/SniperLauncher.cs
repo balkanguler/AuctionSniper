@@ -20,12 +20,12 @@ namespace AuctionSniper
         }
 
 
-        public void JoinAuction(string sniperId, string itemId)
+        public void JoinAuction(string sniperId, Item item)
         {
             List<IAuctionEventListener> eventListeners = new List<IAuctionEventListener>();
-            IAuction auction = auctionHouse.AuctionFor(itemId);
+            IAuction auction = auctionHouse.AuctionFor(item);
 
-            AuctionSniper sniper = new AuctionSniper(itemId, auction);
+            AuctionSniper sniper = new AuctionSniper(item, auction);
             auction.AddAuctionEventListener(sniper);
             eventListeners.Add(sniper);
 

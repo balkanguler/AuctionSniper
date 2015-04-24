@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AuctionSniper.Xmpp;
 
 namespace AuctionSniper.Test
 {
@@ -29,9 +30,10 @@ namespace AuctionSniper.Test
             mainWindow.AddUserRequestListener(requestListenerMock);
 
             mainWindow.TbItemId.Text = "an item-id";
+            mainWindow.TbStopPrice.Text = "789";
             mainWindow.BtnJoin.PerformClick();
 
-            requestListenerMock.Received().JoinAuction(Arg.Any<string>(), "an item-id");
+            requestListenerMock.Received().JoinAuction(Arg.Any<string>(), Arg.Is<Item>(i => i.Equals(new Item("an item-id", 789))));
         }
     }
 }

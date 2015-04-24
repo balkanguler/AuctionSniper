@@ -16,9 +16,9 @@ namespace AuctionSniper.Xmpp
         {
             this.connection = connection;
         }
-        public IAuction AuctionFor(string itemId)
+        public IAuction AuctionFor(Item item)
         {
-            return new XMPPAuction(connection, itemId);
+            return new XMPPAuction(connection, item);
         }
 
         public static XMPPAuctionHouse Connect(string hostname, string port, string username, string password)

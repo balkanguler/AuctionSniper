@@ -1,4 +1,5 @@
 ﻿using agsXMPP;
+using AuctionSniper.Xmpp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace AuctionSniper
 {
     public interface IUserRequestListener
     {
-        void JoinAuction(string sniperId, string itemId);
+        void JoinAuction(string sniperId, Item item);
     }
 }

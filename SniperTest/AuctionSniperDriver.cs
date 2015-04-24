@@ -12,6 +12,7 @@ using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.TableItems;
 using TestStack.White.UIItems.WindowItems;
+using AuctionSniper.Xmpp;
 
 namespace AuctionSniper.Test
 {
@@ -21,6 +22,7 @@ namespace AuctionSniper.Test
         TestStack.White.Application application;
         Window window;
         TextBox itemIdField;
+        TextBox stopPriceField;
         Button bidButton;
         Process process;
         public AuctionSniperDriver(int timeoutMillis, string[] args)
@@ -38,6 +40,7 @@ namespace AuctionSniper.Test
             Assert.IsNotNull(window, "window is null");
 
             itemIdField = window.Get<TextBox>(Program.NEW_ITEM_ID_NAME);
+            stopPriceField = window.Get<TextBox>(Program.NEW_ITEM_STOP_PRICE_NAME);
             bidButton = window.Get<Button>(Program.JOIN_BUTTON_NAME);
         }
 
@@ -68,7 +71,7 @@ namespace AuctionSniper.Test
             return process.Id;
 
         }
-        internal void ShowsSniperStatus(string itemId, int lastPrice, int lastBid, string expectedStatus)
+        internal void ShowsSniperStatus(Item item, int lastPrice, int lastBid, string expectedStatus)
         {
             var table = window.Get<Table>(SearchCriteria.ByAutomationId("gvSniper"));
 
@@ -79,7 +82,7 @@ namespace AuctionSniper.Test
             {
                 Console.WriteLine("table item id: " + table.Rows[i].Cells[(int)Column.ITEM_IDENTIFIER].Value.ToString());
 
-                if (itemId.Equals(table.Rows[i].Cells[(int)Column.ITEM_IDENTIFIER].Value.ToString()))
+                if (item.Identifier.Equals(table.Rows[i].Cells[(int)Column.ITEM_IDENTIFIER].Value.ToString()))
                 {
                     itemFound = true;
                     StringAssert.AreEqualIgnoringCase(lastPrice.ToString(), table.Rows[i].Cells[(int)Column.LAST_PRICE].Value.ToString());
@@ -89,7 +92,7 @@ namespace AuctionSniper.Test
             }
 
             if (!itemFound)
-                throw new InvalidOperationException("Item not found in table. Item: " + itemId);
+                throw new InvalidOperationException("Item not found in table. Item: " + item.Identifier);
 
         }
 
@@ -115,9 +118,10 @@ namespace AuctionSniper.Test
             StringAssert.AreEqualIgnoringCase("State", table.Header.Columns[3].Name);
         }
 
-        internal void StartBiddingFor(string itemId)
+        internal void StartBiddingFor(Item item)
         {
-            itemIdField.Text = itemId;
+            itemIdField.Text = item.Identifier;
+            stopPriceField.Text = item.StopPrice.ToString();
             bidButton.Click();
         }
     }

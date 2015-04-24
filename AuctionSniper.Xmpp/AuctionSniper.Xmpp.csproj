@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Item.cs" />
     <Compile Include="XMPPAuctionHouse.cs" />
     <Compile Include="AuctionMessageTranslator.cs" />
     <Compile Include="CommandFormat.cs" />

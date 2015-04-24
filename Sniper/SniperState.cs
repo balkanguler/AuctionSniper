@@ -11,7 +11,9 @@ namespace AuctionSniper
         JOINING,
         BIDDING,
         WINNING,
+        LOSING,
         LOST,
         WON
+        
     }
 }

@@ -21,7 +21,7 @@ namespace AuctionSniper.Test
 
         internal void StartBiddingIn(params FakeAuctionServer[] auctions)
         {
-            driver = new AuctionSniperDriver(1000, constructArguments(auctions));
+            driver = new AuctionSniperDriver(1000, constructArguments(auctions, Int32.MaxValue));
 
             driver.HasTitle(Program.APPLICATION_TITLE);
             driver.HasColumnTitles();
@@ -29,20 +29,35 @@ namespace AuctionSniper.Test
 
             foreach (var auction in auctions)
             {
-                driver.StartBiddingFor(auction.ItemId);
-                driver.ShowsSniperStatus(auction.ItemId, 0, 0, Status.STATUS_JOINING);
+                driver.StartBiddingFor(auction.Item);
+                driver.ShowsSniperStatus(auction.Item, 0, 0, Status.STATUS_JOINING);
             }
         }
 
-        
-        private static string[] constructArguments(FakeAuctionServer[] auctions)
+        internal void StartBiddingWithStopPrice(int stopPrice, params FakeAuctionServer[] auctions)
+        {
+            driver = new AuctionSniperDriver(1000, constructArguments(auctions, stopPrice));
+
+            driver.HasTitle(Program.APPLICATION_TITLE);
+            driver.HasColumnTitles();
+
+
+            foreach (var auction in auctions)
+            {
+                driver.StartBiddingFor(auction.Item);
+                driver.ShowsSniperStatus(auction.Item, 0, 0, Status.STATUS_JOINING);
+            }
+        }
+                
+        private static string[] constructArguments(FakeAuctionServer[] auctions, int stopPrice)
         {
             List<string> args = new List<string>();
 
             args.AddRange(new string[] {XMPP_HOSTNAME, XMPP_PORT, SNIPER_ID, SNIPER_PASSWORD});
             foreach (var auction in auctions)
-                args.Add(auction.ItemId);
+                args.Add(auction.Item.Identifier);
 
+            args.Add(stopPrice.ToString());
             return args.ToArray();
         }
         internal void Stop()
@@ -53,17 +68,26 @@ namespace AuctionSniper.Test
 
         internal void HasShownSniperIsBidding(FakeAuctionServer auction, int lastPrice, int lastBid)
         {
-            driver.ShowsSniperStatus(auction.ItemId, lastPrice, lastBid, Status.STATUS_BIDDING);
+            driver.ShowsSniperStatus(auction.Item, lastPrice, lastBid, Status.STATUS_BIDDING);
         }
 
         internal void ShowSniperHasWonAuction(FakeAuctionServer auction, int lastPrice)
         {
-            driver.ShowsSniperStatus(auction.ItemId, lastPrice, lastPrice, Status.STATUS_WON);
+            driver.ShowsSniperStatus(auction.Item, lastPrice, lastPrice, Status.STATUS_WON);
         }
 
         internal void HasShownSniperIsWinning(FakeAuctionServer auction, int winningBid)
         {
-            driver.ShowsSniperStatus(auction.ItemId, winningBid, winningBid, Status.STATUS_WINNING);
+            driver.ShowsSniperStatus(auction.Item, winningBid, winningBid, Status.STATUS_WINNING);
+        }        
+        internal void HasShownSniperIsLosing(FakeAuctionServer auction, int lastPrice, int lastBid)
+        {
+            driver.ShowsSniperStatus(auction.Item, lastPrice, lastBid, Status.STATUS_LOSING);
+        }
+
+        internal void ShowsSniperHasLostAuction(FakeAuctionServer auction, int lastPrice, int lastBid)
+        {
+            driver.ShowsSniperStatus(auction.Item, lastPrice, lastBid, Status.STATUS_LOST);
         }
     }
 }

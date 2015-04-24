@@ -15,21 +15,23 @@ namespace AuctionSniper.Test
         [Test]
         public void AddsNewSniperToCollectorAndThenJoinsAuction()
         {
-            string itemId = "item 123";
+            
+            Item item = new Item("item 123", Int32.MaxValue);
+
             IAuctionHouse auctionHouse = Substitute.For<IAuctionHouse>();
             IAuction auction = Substitute.For<IAuction>();
             ISniperCollector collector = Substitute.For<ISniperCollector>();
 
-            auctionHouse.AuctionFor(itemId).Returns(auction);
+            auctionHouse.AuctionFor(item).Returns(auction);
 
             auction.When(a => a.Join()).Do(a =>
             {
-                auction.Received(1).AddAuctionEventListener(Arg.Is<AuctionSniper>(s => s.ItemId.Equals(itemId)));
-                collector.Received(1).AddSniper(Arg.Is<AuctionSniper>(s => s.ItemId.Equals(itemId)));
+                auction.Received(1).AddAuctionEventListener(Arg.Is<AuctionSniper>(s => s.Item.Equals(item)));
+                collector.Received(1).AddSniper(Arg.Is<AuctionSniper>(s => s.Item.Equals(item)));
             });
 
             SniperLauncher launcher = new SniperLauncher(auctionHouse, collector);
-            launcher.JoinAuction(ApplicationRunner.SNIPER_ID, itemId);
+            launcher.JoinAuction(ApplicationRunner.SNIPER_ID, item);
 
             auction.Received(1).Join();
 

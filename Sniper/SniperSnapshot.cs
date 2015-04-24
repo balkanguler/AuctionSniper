@@ -50,6 +50,8 @@ namespace AuctionSniper
                 return SniperState.LOST;
             if (State == SniperState.WINNING)
                 return SniperState.WON;
+            if (State == SniperState.LOSING)
+                return SniperState.LOST;
 
             //Lost, WON
             throw new InvalidOperationException("Auction is already closed");
@@ -58,6 +60,22 @@ namespace AuctionSniper
         internal bool IsForSameItemAs(SniperSnapshot sniperSnapshot)
         {
             return ItemId.Equals(sniperSnapshot.ItemId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            SniperSnapshot snapShot = obj as SniperSnapshot;
+
+            if (snapShot == null)
+                return false;
+
+            return this.ItemId.Equals(snapShot.ItemId) && this.LastBid == snapShot.LastBid && this.LastPrice == snapShot.LastPrice && this.State == snapShot.State;
+        }
+
+
+        public SniperSnapshot Losing(int price)
+        {
+            return new SniperSnapshot(ItemId, price, LastBid, SniperState.LOSING);
         }
     }
 }
