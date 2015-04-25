@@ -15,7 +15,7 @@ namespace AuctionSniper.Test
 
         public static readonly string SNIPER_ID = "sniper";
         public static readonly string SNIPER_PASSWORD = "sniper";
-        public static readonly string XMPP_HOSTNAME = "ZT0804N01";
+        public static readonly string XMPP_HOSTNAME = "SERVER";
         public static readonly string XMPP_PORT = "5222";
         public static readonly string SNIPER_XMPP_ID = SNIPER_ID;
 

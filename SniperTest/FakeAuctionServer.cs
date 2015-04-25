@@ -25,20 +25,18 @@ namespace AuctionSniper.Test
 
         public static readonly string ITEM_ID_AS_LOGIN = "auction-{0}";
         public static readonly string AUCTION_RESOURCE = "Auction";
-        public static readonly string XMPP_HOSTNAME = "ZT0804N01";
-        public static readonly int XMPP_PORT = 5222;
 
         public Item Item { get { return item; } }
         public FakeAuctionServer(Item item)
         {
             this.item = item;
-            connection = new XmppClientConnection(XMPP_HOSTNAME, XMPP_PORT);
+            connection = new XmppClientConnection(ApplicationRunner.XMPP_HOSTNAME, Int32.Parse(ApplicationRunner.XMPP_PORT));
         }
 
         internal void StartSellingItem()
         {
             Thread.Sleep(2000);
-            Jid jid = new Jid(string.Format(ITEM_ID_AS_LOGIN, item.Identifier), XMPP_HOSTNAME, AUCTION_RESOURCE);
+            Jid jid = new Jid(string.Format(ITEM_ID_AS_LOGIN, item.Identifier), ApplicationRunner.XMPP_HOSTNAME, AUCTION_RESOURCE);
 
             connection.Password = AUCTION_PASSWORD;
             connection.Username = jid.User;
@@ -107,7 +105,7 @@ namespace AuctionSniper.Test
             AnnounceClosed();
 
             //Sometimes test finishes before the client receives the Close message. So we set buffer for client to receive and process the message.
-            Thread.Sleep(1000);           
+            Thread.Sleep(1000);
 
             eventListenerMock.Received(1).AuctionClosed();
         }
