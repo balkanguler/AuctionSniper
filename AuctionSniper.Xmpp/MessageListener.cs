@@ -9,15 +9,14 @@ namespace AuctionSniper.Xmpp
 {
     public class MessageListener : IMessageListener
     {
+        public Action<Chat, string> OnMessageReceived;
+
         public virtual void ProcessMessage(Chat aChat, string message)
         {
-            Debug.WriteLine("Base Processing Message: " + message );
             if (OnMessageReceived != null)
             {
                 OnMessageReceived(aChat, message);
             }
         }
-
-        public Action<Chat, string> OnMessageReceived;
     }
 }

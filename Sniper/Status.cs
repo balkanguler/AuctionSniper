@@ -32,7 +32,6 @@ namespace AuctionSniper
                 return STATUS_FAILED;
 
             return STATUS_LOST;
-
         }
     }
 }

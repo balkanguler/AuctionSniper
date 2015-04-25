@@ -14,7 +14,6 @@ namespace AuctionSniper
         }
         public void SniperLost()
         {
-           
         }
 
         public void SniperBidding(SniperSnapshot newSnapShot)
@@ -24,7 +23,6 @@ namespace AuctionSniper
 
         public void SniperWon()
         {
-           
         }
 
         public void SniperStateChanged(SniperSnapshot newSnapShot)

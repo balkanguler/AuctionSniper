@@ -17,12 +17,12 @@ namespace AuctionSniper
 {
     public partial class MainWindow : Form
     {
-        private readonly string sniperId;
-     
-        public static readonly string AUCTION_RESOURCE = "Auction";
-        SniperTableModel snipers;
+        readonly string sniperId;
         readonly List<IUserRequestListener> sniperLaunchers = new List<IUserRequestListener>();
+        SniperTableModel snipers;
 
+        public static readonly string AUCTION_RESOURCE = "Auction";
+        
         public MainWindow(SniperPortfolio portfolio, string sniperId)
         {
             InitializeComponent();

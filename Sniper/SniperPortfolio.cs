@@ -13,7 +13,6 @@ namespace AuctionSniper
         {
             listeners.Add(listener);
         }
-
         public void AddSniper(AuctionSniper sniper)
         {
             listeners.ForEach(l => l.SniperAdded(sniper));

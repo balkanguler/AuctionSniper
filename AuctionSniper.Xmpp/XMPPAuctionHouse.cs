@@ -9,9 +9,10 @@ namespace AuctionSniper.Xmpp
 {
     public class XMPPAuctionHouse: IAuctionHouse
     {
+        XmppClientConnection connection;
+        IXMPPFailureReporter failureReporter;
+
         public static readonly string AUCTION_RESOURCE = "Auction";        
-        private XmppClientConnection connection;
-        private IXMPPFailureReporter failureReporter;
 
         public XMPPAuctionHouse(XmppClientConnection connection)
         {
@@ -31,8 +32,6 @@ namespace AuctionSniper.Xmpp
 
             connection.Password = password;
             connection.Username = jid.User;
-
-            Console.WriteLine("Client Connection User: " + jid.User + " Password: " + password);
             connection.AutoAgents = false;
             connection.AutoPresence = true;
             connection.AutoRoster = true;
@@ -41,7 +40,6 @@ namespace AuctionSniper.Xmpp
 
             connection.OnLogin += (object sender) =>
             {
-                Console.WriteLine("Connected ");
             };
 
             return new XMPPAuctionHouse(connection);

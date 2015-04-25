@@ -13,12 +13,13 @@ namespace AuctionSniper.Xmpp.Test
     [TestFixture]
     class AuctionMessageTranslatorTest
     {
-        public static readonly Chat UNUSED_CHAT = null;
+        static string SNIPER_ID = "sniper";
         IAuctionEventListener listenerMock;
         IXMPPFailureReporter failureReporterMock;
         AuctionMessageTranslator translator;
         ILogger loggerMock;
-        private static string SNIPER_ID = "sniper";
+
+        public static readonly Chat UNUSED_CHAT = null;
 
         [SetUp]
         public void Setup()
@@ -31,7 +32,7 @@ namespace AuctionSniper.Xmpp.Test
             list.Add(listenerMock);
 
             translator = new AuctionMessageTranslator(SNIPER_ID, list, failureReporterMock);
-       }
+        }
 
         [Test]
         public void NotifiesAuctionClosedWhenCloseMessageReceived()

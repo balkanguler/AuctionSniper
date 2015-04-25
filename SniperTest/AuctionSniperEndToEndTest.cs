@@ -21,7 +21,6 @@ namespace AuctionSniper.Test
             auction = new FakeAuctionServer( new Item("item-54321", Int32.MaxValue));
             auction2 = new FakeAuctionServer(new Item("item-65432", Int32.MaxValue));
             application = new ApplicationRunner();
-            MessageListener.ClearQueue();
         }
 
         [Test]
@@ -73,7 +72,6 @@ namespace AuctionSniper.Test
 
             application.ShowSniperHasWonAuction(auction, 1098);
             application.ShowSniperHasWonAuction(auction2, 521);
-
         }
 
         [Test]
@@ -99,8 +97,6 @@ namespace AuctionSniper.Test
             auction.AnnounceClosed();
             application.ShowsSniperHasLostAuction(auction, 1207, 1098);
         }
-
-       
 
         [Test]
         public void SniperMakesAHigherBidButLoses()
@@ -140,7 +136,6 @@ namespace AuctionSniper.Test
 
             application.ReportsInvalidMessage(auction, brokenMessage);
             application.ShowsSniperHasFailed(auction);
-
         }
 
         private void waitForAnotherAuctionEvent()
@@ -153,8 +148,8 @@ namespace AuctionSniper.Test
         [TearDown]
         public void TearDown()
         {
-            Console.WriteLine("Tearing Down...");
             auction.Stop();
+            auction2.Stop();
             application.Stop();
         }
     }

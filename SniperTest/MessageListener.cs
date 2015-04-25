@@ -11,18 +11,10 @@ namespace AuctionSniper.Test
 {
     class MessageListener : IMessageListener
     {
-        private readonly BlockingCollection<string> messages = new BlockingCollection<string>();
+        readonly BlockingCollection<string> messages = new BlockingCollection<string>();
 
-        public static void ClearQueue()
-        {
-            //int count = messages.Count;
-
-            //for (int i = 0; i < count; i++)
-            //    messages.Take();
-        }
         public void ProcessMessage(Chat aChat, string message)
         {
-            Console.WriteLine("Gelen Mesaj: " + message);
             messages.Add(message);
         }
 

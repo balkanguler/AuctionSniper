@@ -9,9 +9,6 @@ namespace AuctionSniper
 {
     public static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         public static readonly string APPLICATION_TITLE = "Auction Sniper";
         public static readonly string NEW_ITEM_ID_NAME = "item id";
         public static readonly string NEW_ITEM_STOP_PRICE_NAME = "Stop Price";
@@ -19,12 +16,11 @@ namespace AuctionSniper
 
         static MainWindow form;
         
-        private static readonly int ARG_HOSTNAME = 0;
-        private static readonly int ARG_PORT = 1;
-        private static readonly int ARG_USERNAME = 2;
-        private static readonly int ARG_PASSWORD = 3;
-        private static readonly int ARG_STOP_PRICE = 5;        
-        
+        static readonly int ARG_HOSTNAME = 0;
+        static readonly int ARG_PORT = 1;
+        static readonly int ARG_USERNAME = 2;
+        static readonly int ARG_PASSWORD = 3;
+        static readonly int ARG_STOP_PRICE = 5;        
 
         [STAThread]
         public static void Main(string[] args)
@@ -44,10 +40,7 @@ namespace AuctionSniper
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Console.WriteLine("Appdomain unhandled exception.");
-
             Console.WriteLine(e.ToString());
         }
-
     }
 }

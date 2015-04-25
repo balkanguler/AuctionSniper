@@ -8,9 +8,7 @@ namespace AuctionSniper.Xmpp
     public interface IAuctionEventListener
     {       
         void AuctionClosed();
-
         void CurrentPrice(int price, int increment, PriceSource priceSource);
-
         void AuctionFailed();
     }
 }

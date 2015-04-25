@@ -10,15 +10,14 @@ namespace AuctionSniper.Test
 {
     class ApplicationRunner
     {
+        AuctionLogDriver logDriver = new AuctionLogDriver();
+        AuctionSniperDriver driver;
+
         public static readonly string SNIPER_ID = "sniper";
         public static readonly string SNIPER_PASSWORD = "sniper";
         public static readonly string XMPP_HOSTNAME = "ZT0804N01";
         public static readonly string XMPP_PORT = "5222";
         public static readonly string SNIPER_XMPP_ID = SNIPER_ID;
-
-        private AuctionLogDriver logDriver = new AuctionLogDriver();
-        private AuctionSniperDriver driver;
-       
 
         internal void StartBiddingIn(params FakeAuctionServer[] auctions)
         {
@@ -27,7 +26,6 @@ namespace AuctionSniper.Test
 
             driver.HasTitle(Program.APPLICATION_TITLE);
             driver.HasColumnTitles();
-
 
             foreach (var auction in auctions)
             {
@@ -44,7 +42,6 @@ namespace AuctionSniper.Test
 
             driver.HasTitle(Program.APPLICATION_TITLE);
             driver.HasColumnTitles();
-
 
             foreach (var auction in auctions)
             {
@@ -69,7 +66,6 @@ namespace AuctionSniper.Test
             if (driver != null)
                 driver.dispose();            
         }
-
         internal void HasShownSniperIsBidding(FakeAuctionServer auction, int lastPrice, int lastBid)
         {
             driver.ShowsSniperStatus(auction.Item, lastPrice, lastBid, Status.STATUS_BIDDING);

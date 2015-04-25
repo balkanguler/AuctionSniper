@@ -8,8 +8,8 @@ namespace AuctionSniper.Xmpp
 {
     public class Item
     {
-        private readonly string identifier;
-        private readonly int stopPrice;
+        readonly string identifier;
+        readonly int stopPrice;
 
         public string Identifier
         {

@@ -11,10 +11,11 @@ namespace AuctionSniper.Test
     [TestFixture]
     public class SniperTableModelTest
     {
-        private SniperTableModel model;
+        SniperTableModel model;
 
         [SetUp]
-        public void SetUp() {
+        public void SetUp()
+        {
             model = new SniperTableModel();
         }
         [Test]
@@ -32,7 +33,7 @@ namespace AuctionSniper.Test
 
             model.SniperStateChanged(bidding);
 
-            assertRowMatchesSnapShot(0, bidding);  
+            assertRowMatchesSnapShot(0, bidding);
         }
 
         [Test]

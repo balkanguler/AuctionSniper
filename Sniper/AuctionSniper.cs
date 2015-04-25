@@ -16,7 +16,17 @@ namespace AuctionSniper
 
         public Item Item
         {
-            get { return item; }
+            get
+            {
+                return item;
+            }
+        }
+        public SniperSnapshot SnapShot
+        {
+            get
+            {
+                return snapShot;
+            }
         }
 
         public AuctionSniper(Item item, IAuction auction)
@@ -29,8 +39,6 @@ namespace AuctionSniper
         public void AuctionClosed()
         {
             snapShot = snapShot.Closed();
-
-            Console.Write("auction closed: state: " + snapShot.State.ToString());
             notifyChange();
         }
 
@@ -68,11 +76,7 @@ namespace AuctionSniper
             if (sniperListener != null)
                 sniperListener.SniperStateChanged(snapShot);
         }
-
-
-        public SniperSnapshot SnapShot { get { return snapShot; } }
-
-
+        
         public void AuctionFailed()
         {
             snapShot = snapShot.Failed();

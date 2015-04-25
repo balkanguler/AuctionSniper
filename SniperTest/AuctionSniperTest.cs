@@ -16,7 +16,7 @@ namespace AuctionSniper.Test
         ISniperListener sniperListener;
         AuctionSniper sniper;
         IAuction auction;
-        private Item item;
+        Item item;
 
         [SetUp]
         public void Setup()
@@ -53,18 +53,18 @@ namespace AuctionSniper.Test
         }
 
         [Test]
-        public void ReportstWonWhenAuctionClosesWhenWinning()
+        public void ReportsWonIfAuctionClosesWhenWinning()
         {
             sniper.CurrentPrice(123, 45, PriceSource.FromSniper);
             sniper.AuctionClosed();
 
             //In the original example it uses jMock states for keeping the method call
-            //bool called = false;
-            //sniperListener.When(sl => sl.SniperWinning()).Do(x => called = true);
+            bool called = false;
+            sniperListener.When(sl => sl.SniperStateChanged(Arg.Is<SniperSnapshot>(ss => ss.State == SniperState.WINNING))).Do(x => called = true);
 
-            //// If SniperBidding is called then SniperLost should be called.
-            //if (called)
-            //    sniperListener.Received().SniperWon();
+            // If SniperWinning is called then SniperWon should be called.
+            if (called)
+                sniperListener.Received().SniperWon();
         }
 
         [Test]
@@ -92,7 +92,6 @@ namespace AuctionSniper.Test
             auction.Received().Bid(price + increment);
 
             sniperListener.Received().SniperStateChanged(new SniperSnapshot(item.Identifier, price, bid, SniperState.BIDDING));
-
         }
 
         private void createSniperWithStopPrice(int stopPrice)
@@ -118,8 +117,6 @@ namespace AuctionSniper.Test
             if (bidded)
                 sniperListener.Received(1).SniperStateChanged(new SniperSnapshot(item.Identifier, 2345, 168, SniperState.LOSING));
         }
-
-       
 
         [Test]
         public void DoesNotBidReportsLosingIfFirstPriceIsAboveStopPrice()
@@ -158,7 +155,6 @@ namespace AuctionSniper.Test
             sniper.CurrentPrice(2390, 45, PriceSource.FromOtherBidder);
 
             sniperListener.Received(1).SniperStateChanged(new SniperSnapshot(item.Identifier, 2390, 0, SniperState.LOSING));
-
         }
 
         [Test]

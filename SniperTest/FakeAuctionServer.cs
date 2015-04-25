@@ -16,19 +16,19 @@ namespace AuctionSniper.Test
 {
     class FakeAuctionServer
     {
+        static readonly string AUCTION_PASSWORD = "auction";
+        readonly MessageListener messageListener = new MessageListener();
+        readonly Item item;
+        readonly XmppClientConnection connection;
+
+        Chat currentChat;
+
         public static readonly string ITEM_ID_AS_LOGIN = "auction-{0}";
         public static readonly string AUCTION_RESOURCE = "Auction";
         public static readonly string XMPP_HOSTNAME = "ZT0804N01";
         public static readonly int XMPP_PORT = 5222;
 
-        private static readonly string AUCTION_PASSWORD = "sniper";
-        private readonly MessageListener messageListener = new MessageListener();
-
-        private readonly Item item;
-        private readonly XmppClientConnection connection;
-
-        private Chat currentChat;
-
+        public Item Item { get { return item; } }
         public FakeAuctionServer(Item item)
         {
             this.item = item;
@@ -69,7 +69,6 @@ namespace AuctionSniper.Test
 
         internal void AnnounceClosed()
         {
-            Debug.WriteLine("announceClosed: " + CommandFormat.CLOSE_COMMAND_FORMAT);
             currentChat.SendMessage(CommandFormat.CLOSE_COMMAND_FORMAT);
         }
 
@@ -78,8 +77,6 @@ namespace AuctionSniper.Test
             connection.Close();
         }
 
-        public Item Item { get { return item; } }
-
         internal void ReportPrice(int price, int incerement, string bidder)
         {
             currentChat.SendMessage(string.Format(CommandFormat.REPORT_PRICE_COMMAND_FORMAT, price, incerement, bidder));
@@ -87,7 +84,7 @@ namespace AuctionSniper.Test
 
         internal void HasReceivedBid(int bid, string sniperId)
         {
-            StringAssert.AreEqualIgnoringCase(currentChat.Peer, sniperId);
+            StringAssert.AreEqualIgnoringCase(currentChat.PeerUserName, sniperId);
 
             receivesAMessageMatching(sniperId, string.Format(CommandFormat.BID_COMMAND_FORMAT, bid));
         }
@@ -95,7 +92,7 @@ namespace AuctionSniper.Test
         private void receivesAMessageMatching(string sniperId, string expectedMessage)
         {
             messageListener.receivesAMessagesWithText(expectedMessage);
-            StringAssert.AreEqualIgnoringCase(sniperId, currentChat.Peer);
+            StringAssert.AreEqualIgnoringCase(sniperId, currentChat.PeerUserName);
         }
 
         public void ReceivesEventsFromAuctionServerAfterJoining()
@@ -113,7 +110,6 @@ namespace AuctionSniper.Test
             Thread.Sleep(1000);           
 
             eventListenerMock.Received(1).AuctionClosed();
-            
         }
 
         internal void SendInvalidMessageContaining(string brokenMessage)

@@ -10,14 +10,14 @@ namespace AuctionSniper.Xmpp
 {
     public class XMPPAuction : IAuction
     {
+        readonly List<IAuctionEventListener> auctionEventListeners = new List<IAuctionEventListener>();
+        IXMPPFailureReporter failureReporter;
+
         public static readonly string ITEM_ID_AS_LOGIN = "auction-{0}";
         public static readonly string AUCTION_RESOURCE = "Auction";
         public static readonly string AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "{0}/" + AUCTION_RESOURCE;
-        private readonly List<IAuctionEventListener> auctionEventListeners = new List<IAuctionEventListener>();
 
-        IXMPPFailureReporter failureReporter;
         public Chat Chat { get; set; }
-
 
         public XMPPAuction(XmppClientConnection connection, Item item, IXMPPFailureReporter failureReporter)
         {
@@ -45,7 +45,6 @@ namespace AuctionSniper.Xmpp
 
         public void Join()
         {
-            Console.WriteLine("Join message sending");
             SendMessage(string.Format(CommandFormat.JOIN_COMMAND_FORMAT));
         }
 
@@ -54,8 +53,6 @@ namespace AuctionSniper.Xmpp
             if (Chat != null)
                 Chat.SendMessage(message);
         }
-
-
         public void AddAuctionEventListener(IAuctionEventListener auctionEventListener)
         {
             auctionEventListeners.Add(auctionEventListener);

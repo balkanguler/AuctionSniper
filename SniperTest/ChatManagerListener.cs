@@ -8,16 +8,14 @@ namespace AuctionSniper.Test
 {
     class ChatManagerListener : IChatManagerListener
     {
+        public Action<Chat> OnChatCreated;
+
         public void ChatCreated(Chat chat, bool createdlocally)
         {
-            Console.WriteLine("Chat Created");
-
             if (OnChatCreated != null)
             {
                 OnChatCreated(chat);
             }
         }
-
-        public Action<Chat> OnChatCreated;
     }
 }

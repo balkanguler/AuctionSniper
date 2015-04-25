@@ -10,40 +10,43 @@ namespace agsXMPPChat
     public class Chat
     {
         XmppClientConnection connection;
-        string peer;
-
-        public string Peer
-        {
-            get { return peer; }
-            set { peer = value; }
-        }
+        string peerUserName;
+        string userName;
         string server;
+        string resource;
+        IMessageListener messageListener;
 
+        public string UserName
+        {
+            get { return userName; }
+            set { userName = value; }
+        }
+        public string PeerUserName
+        {
+            get { return peerUserName; }
+            set { peerUserName = value; }
+        }
         public string Server
         {
             get { return server; }
             set { server = value; }
         }
-        string resource;
-
         public string Resource
         {
             get { return resource; }
             set { resource = value; }
         }
 
-        IMessageListener messageListener;
-
         public IMessageListener MessageListener
         {
             get { return messageListener; }
             set { messageListener = value; }
         }
-
         public Chat(XmppClientConnection connection, string peer, string server, string resource, IMessageListener messageListener)
         {
             this.connection = connection;
-            this.peer = peer;
+            this.userName = connection.Username;
+            this.peerUserName = peer;
             this.server = server;
             this.resource = resource;
 
@@ -52,7 +55,7 @@ namespace agsXMPPChat
 
         public void SendMessage(string message)
         {
-            connection.Send(new Message(new Jid(peer + "@" + server + "/" + resource), MessageType.chat, message));
+            connection.Send(new Message(new Jid(peerUserName + "@" + server + "/" + resource), MessageType.chat, message));
         }
     }
 }

@@ -20,8 +20,6 @@ namespace AuctionSniper
             this.Columns.Add("Last Price");
             this.Columns.Add("Last Bid");
             this.Columns.Add("State");
-
-           // AddSniper(STARTING_UP);
         }
 
         public void SniperStateChanged(SniperSnapshot newSnapshot)
@@ -34,7 +32,6 @@ namespace AuctionSniper
 
         private int rowMatching(SniperSnapshot snapShot)
         {
-
             for (int i = 0; i < snapShots.Count; i++)
             {
                 if (snapShot.IsForSameItemAs(snapShots[i]))
@@ -46,7 +43,6 @@ namespace AuctionSniper
 
         private void setDataRow(int rowIndex)
         {
-
             if (this.Rows.Count == rowIndex)
             {
                DataRow row = this.NewRow();

@@ -9,8 +9,8 @@ namespace AuctionSniper.Xmpp
 {
     class ChatDisconnector : IAuctionEventListener
     {
-        private AuctionMessageTranslator translator;
-        private Chat chat;
+        AuctionMessageTranslator translator;
+        Chat chat;
         public ChatDisconnector(AuctionMessageTranslator translator, Chat chat)
         {
             this.translator = translator;
@@ -18,12 +18,10 @@ namespace AuctionSniper.Xmpp
         }
         public void AuctionClosed()
         {
-            
         }
 
         public void CurrentPrice(int price, int increment, PriceSource priceSource)
         {
-            
         }
 
         public void AuctionFailed()

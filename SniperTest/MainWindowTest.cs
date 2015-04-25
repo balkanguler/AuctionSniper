@@ -14,8 +14,9 @@ namespace AuctionSniper.Test
     [TestFixture]
     public class MainWindowTest
     {
-        private  SniperPortfolio portfolio;
-        private  MainWindow mainWindow;
+        SniperPortfolio portfolio;
+        MainWindow mainWindow;
+
         [SetUp]
         public void SetUp()
         {

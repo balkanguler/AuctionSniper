@@ -61,10 +61,10 @@ namespace AuctionSniper.Test
             process.OutputDataReceived += new DataReceivedEventHandler(
                 (s, e) =>
                 {
-                    Console.WriteLine("***** " + e.Data);
+                    Console.WriteLine("SUT Console: " + e.Data);
                 }
             );
-            process.ErrorDataReceived += new DataReceivedEventHandler((s, e) => { Console.WriteLine(e.Data); });
+            process.ErrorDataReceived += new DataReceivedEventHandler((s, e) => { Console.WriteLine("SUT Error Console: " + e.Data); });
 
             process.BeginOutputReadLine();
 
@@ -80,8 +80,6 @@ namespace AuctionSniper.Test
             bool itemFound = false;
             for (var i = 0; i < table.Rows.Count; i++)
             {
-                Console.WriteLine("table item id: " + table.Rows[i].Cells[(int)Column.ITEM_IDENTIFIER].Value.ToString());
-
                 if (item.Identifier.Equals(table.Rows[i].Cells[(int)Column.ITEM_IDENTIFIER].Value.ToString()))
                 {
                     itemFound = true;

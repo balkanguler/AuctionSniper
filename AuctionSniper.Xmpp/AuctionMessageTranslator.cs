@@ -9,13 +9,12 @@ namespace AuctionSniper.Xmpp
 {
     public class AuctionMessageTranslator : MessageListener
     {
-        private readonly List<IAuctionEventListener> auctionEventListeners;
+        readonly List<IAuctionEventListener> auctionEventListeners;
         IXMPPFailureReporter failureReporter;
-        private string sniperId;
+        string sniperId;
 
         public AuctionMessageTranslator(string sniperId, List<IAuctionEventListener> auctionEventListeners, IXMPPFailureReporter failureReporter)
         {
-            // TODO: Complete member initialization
             this.sniperId = sniperId;
             this.auctionEventListeners = auctionEventListeners;
             this.failureReporter = failureReporter;
@@ -31,7 +30,6 @@ namespace AuctionSniper.Xmpp
                 failureReporter.CannotTranslateMessage(sniperId, message, ex);
                 auctionEventListeners.ForEach(l => l.AuctionFailed());
             }
-
         }
 
         private void translate(string message)
@@ -64,10 +62,8 @@ namespace AuctionSniper.Xmpp
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine("Exception in unpackEventFrom.");
-                Debug.WriteLine(ex.ToString());
                 throw;
             }
             return eventList;
@@ -80,7 +76,6 @@ namespace AuctionSniper.Xmpp
         public string Type { get { return get("Event"); } }
         public int CurrentPrice { get { return getInt("CurrentPrice"); } }
         public int Increment { get { return getInt("Increment"); } }
-
 
         private int getInt(string fieldName)
         {

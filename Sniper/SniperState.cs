@@ -15,6 +15,5 @@ namespace AuctionSniper
         LOST,
         WON,
         FAILED
-        
     }
 }

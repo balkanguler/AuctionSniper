@@ -34,8 +34,6 @@ namespace AuctionSniper.Test
             launcher.JoinAuction(ApplicationRunner.SNIPER_ID, item);
 
             auction.Received(1).Join();
-
-
         }
     }
 }
